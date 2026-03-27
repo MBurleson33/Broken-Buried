@@ -1589,23 +1589,27 @@ function checkAdminAuth() {
 async function doAdminLogin() {
   const pw = document.getElementById('admin-password').value;
   if (!pw) return;
+  const errEl = document.getElementById('auth-error');
   try {
     const res = await fetch('/api/auth', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ password: pw })
     });
+    const data = await res.json();
     if (res.ok) {
       sessionStorage.setItem('bb_admin', '1');
       document.getElementById('admin-password').value = '';
-      document.getElementById('auth-error').classList.add('hidden');
+      errEl.classList.add('hidden');
       showPage('admin-page');
       loadAdminPosts();
     } else {
-      document.getElementById('auth-error').classList.remove('hidden');
+      errEl.textContent = 'Error ' + res.status + ': ' + (data.error || 'Unknown');
+      errEl.classList.remove('hidden');
     }
   } catch(e) {
-    document.getElementById('auth-error').classList.remove('hidden');
+    errEl.textContent = 'Network error: ' + e.message;
+    errEl.classList.remove('hidden');
   }
 }
 
