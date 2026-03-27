@@ -1318,8 +1318,13 @@ input, textarea, select { font: inherit; color: inherit; background: none; borde
         <textarea id="editor-excerpt" style="min-height:80px;background:var(--mid);border:1px solid var(--border);padding:0.8rem 1rem;resize:vertical;" placeholder="Short excerpt for the blog card…"></textarea>
       </div>
       <div class="form-group">
-        <label>Cover Image URL</label>
-        <input type="text" id="editor-cover" placeholder="https://... or leave blank for placeholder" />
+        <label>Cover Image</label>
+        <div class="cover-upload-area" onclick="document.getElementById('cover-file-input').click()" id="cover-upload-area">
+          <p id="cover-upload-label">Tap to upload a cover image</p>
+          <img id="cover-preview" class="cover-preview" alt="Cover preview" />
+        </div>
+        <input type="file" id="cover-file-input" accept="image/*" style="display:none" onchange="handleCoverUpload(event)" />
+        <input type="hidden" id="editor-cover" />
       </div>
       <div class="form-group">
         <label>Content (Markdown supported)</label>
@@ -1366,7 +1371,7 @@ input, textarea, select { font: inherit; color: inherit; background: none; borde
 // ═══════════════════════════════════════════════════════════
 const SUPABASE_URL = 'https://olhpiqxxofcwlkpvimug.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9saHBpcXh4b2Zjd2xrcHZpbXVnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ1NzgxMzgsImV4cCI6MjA5MDE1NDEzOH0.7t8CE_VxXzHCEpLIFOiwRFbgsWQWRQ42QxlESgE1tGQ';
-const ADMIN_PASSWORD = 'b&b2026';
+// Password is stored in Vercel environment variable ADMIN_PASSWORD — never in code
 
 // ═══════════════════════════════════════════════════════════
 // INIT
@@ -1581,15 +1586,25 @@ function checkAdminAuth() {
   else { showPage('auth-gate'); }
 }
 
-function doAdminLogin() {
+async function doAdminLogin() {
   const pw = document.getElementById('admin-password').value;
-  if (pw === ADMIN_PASSWORD) {
-    sessionStorage.setItem('bb_admin', '1');
-    document.getElementById('admin-password').value = '';
-    document.getElementById('auth-error').classList.add('hidden');
-    showPage('admin-page');
-    loadAdminPosts();
-  } else {
+  if (!pw) return;
+  try {
+    const res = await fetch('/api/auth', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password: pw })
+    });
+    if (res.ok) {
+      sessionStorage.setItem('bb_admin', '1');
+      document.getElementById('admin-password').value = '';
+      document.getElementById('auth-error').classList.add('hidden');
+      showPage('admin-page');
+      loadAdminPosts();
+    } else {
+      document.getElementById('auth-error').classList.remove('hidden');
+    }
+  } catch(e) {
     document.getElementById('auth-error').classList.remove('hidden');
   }
 }
@@ -1644,6 +1659,43 @@ function switchTab(tab) {
   if (tab === 'new') clearEditor();
 }
 
+// ═══════════════════════════════════════════════════════════
+// IMAGE UPLOAD
+// ═══════════════════════════════════════════════════════════
+async function handleCoverUpload(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  const label = document.getElementById('cover-upload-label');
+  label.textContent = 'Uploading…';
+
+  // Show local preview immediately
+  const reader = new FileReader();
+  reader.onload = e => {
+    const preview = document.getElementById('cover-preview');
+    preview.src = e.target.result;
+    preview.style.display = 'block';
+  };
+  reader.readAsDataURL(file);
+
+  // Upload to Supabase Storage
+  const ext = file.name.split('.').pop();
+  const filename = `cover-${Date.now()}.${ext}`;
+  const { data, error } = await sb.storage
+    .from('post-images')
+    .upload(filename, file, { upsert: true });
+
+  if (error) {
+    label.textContent = 'Upload failed — try again';
+    showToast('Image upload failed: ' + error.message);
+    return;
+  }
+
+  const { data: urlData } = sb.storage.from('post-images').getPublicUrl(filename);
+  document.getElementById('editor-cover').value = urlData.publicUrl;
+  label.textContent = 'Image uploaded ✓ — tap to replace';
+}
+
 function clearEditor() {
   document.getElementById('edit-post-id').value = '';
   document.getElementById('editor-title').value = '';
@@ -1651,6 +1703,11 @@ function clearEditor() {
   document.getElementById('editor-excerpt').value = '';
   document.getElementById('editor-cover').value = '';
   document.getElementById('editor-content').value = '';
+  document.getElementById('cover-file-input').value = '';
+  const preview = document.getElementById('cover-preview');
+  preview.style.display = 'none';
+  preview.src = '';
+  document.getElementById('cover-upload-label').textContent = 'Tap to upload a cover image';
   isPublished = false;
   updatePublishToggle();
 }
@@ -1662,6 +1719,16 @@ function editPost(post) {
   document.getElementById('editor-excerpt').value = post.excerpt || '';
   document.getElementById('editor-cover').value = post.cover_image_url || '';
   document.getElementById('editor-content').value = post.content || '';
+  // Show existing cover image in preview
+  const preview = document.getElementById('cover-preview');
+  if (post.cover_image_url) {
+    preview.src = post.cover_image_url;
+    preview.style.display = 'block';
+    document.getElementById('cover-upload-label').textContent = 'Tap to replace image';
+  } else {
+    preview.style.display = 'none';
+    document.getElementById('cover-upload-label').textContent = 'Tap to upload a cover image';
+  }
   isPublished = post.published || false;
   updatePublishToggle();
   switchTab('new');
