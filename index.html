@@ -17,7 +17,7 @@
 <meta name="twitter:title" content="Broken + Buried" id="tw-title" />
 <meta name="twitter:description" content="We are all broken. We are not forgotten." id="tw-desc" />
 <meta name="twitter:image" content="https://broken-buried.vercel.app/og-default.jpg" id="tw-image" />
-<link rel="icon" href="/images/B+B_black.webp" type="image/webp" /><text y='.9em' font-size='70' fill='white' font-family='serif'>✝</text></svg>" />
+<link rel="icon" href="/images/B+B_black.webp" type="image/webp" />
 <script type="application/ld+json" id="json-ld">{"@context":"https://schema.org","@type":"WebSite","name":"Broken + Buried","url":"https://broken-buried.vercel.app"}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -49,6 +49,7 @@ input,textarea{font:inherit;color:inherit;background:none;border:none;outline:no
 
 /* Logo — wide image on desktop, stacked icon on mobile */
 .nav-logo{display:flex;align-items:center;cursor:pointer;flex-shrink:0;user-select:none}
+.nav-logo-text{font-family:var(--font-display);font-size:clamp(.75rem,2vw,.95rem);letter-spacing:.12em;color:var(--white);white-space:nowrap;border-bottom:1px solid var(--accent2);padding-bottom:2px}
 .nav-logo-wide{height:36px;width:auto;display:block}
 .nav-logo-icon{height:40px;width:auto;display:none}
 
@@ -342,8 +343,9 @@ article.post-body img{max-width:100%;margin:2rem auto;filter:grayscale(20%)}
 <nav id="nav" style="position:relative;">
   <!-- Logo left -->
   <div class="nav-logo" onclick="navigate('home')">
-    <img src="/images/Broken+Buried_White.png" alt="Broken + Buried" class="nav-logo-wide" onerror="this.style.display='none'" />
-    <img src="/images/B+B_white.webp" alt="B+B" class="nav-logo-icon" onerror="this.style.display='none'" />
+    <img src="/images/Broken+Buried_White.png" alt="" class="nav-logo-wide" onerror="this.style.display='none'" onload="document.querySelectorAll('.nav-logo-text').forEach(el=>el.style.display='none')" />
+    <img src="/images/B+B_white.webp" alt="" class="nav-logo-icon" onerror="this.style.display='none'" />
+    <span class="nav-logo-text">Broken + Buried</span>
   </div>
   <!-- Right group: nav links | divider | search -->
   <div class="nav-right-group">
@@ -386,7 +388,7 @@ article.post-body img{max-width:100%;margin:2rem auto;filter:grayscale(20%)}
     <div class="hex-overlay"></div>
     <div id="bokeh-container" aria-hidden="true"></div>
     <div class="hero-content">
-      <img src="/images/Broken+Buried_White.png" alt="Broken + Buried" class="hero-logo-img" onerror="this.style.display='none'" />
+      <img src="/images/Broken+Buried_White.png" alt="" class="hero-logo-img" onerror="this.style.display='none'" />
       <p class="hero-verse">"For we know that our old self was crucified with him so that the body ruled by sin might be done away with, that we should no longer be slaves to sin." — Romans 6:6</p>
     </div>
     <div class="scroll-indicator" onclick="document.getElementById('about').scrollIntoView({behavior:'smooth'})" aria-hidden="true">
@@ -397,7 +399,7 @@ article.post-body img{max-width:100%;margin:2rem auto;filter:grayscale(20%)}
   <section id="about">
     <div class="about-image" aria-hidden="true">
       <div class="about-texture"></div>
-      <img src="/images/B+B_white.webp" alt="B+B" class="about-logo-img" onerror="this.style.display='none'" />
+      <img src="/images/B+B_white.webp" alt="" class="about-logo-img" onerror="this.style.display='none'" />
     </div>
     <div class="about-text">
       <div>
@@ -550,7 +552,7 @@ article.post-body img{max-width:100%;margin:2rem auto;filter:grayscale(20%)}
     <li><a onclick="navigate('blog')" href="#">Blog</a></li>
   </ul>
   <div class="footer-logo">
-    <img src="/images/Broken+Buried_White.png" alt="Broken + Buried" onerror="this.style.display='none'" />
+    <img src="/images/Broken+Buried_White.png" alt="" onerror="this.style.display='none'" />
   </div>
   <div class="footer-copy">© <span id="footer-year"></span> Broken + Buried</div>
 </footer>
@@ -897,6 +899,18 @@ function insertMd(before,after){const ta=document.getElementById('editor-content
 // ═══ UTILS ════════════════════════════════════════════════
 function esc(str){if(!str)return '';return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
 function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000);}
+
+// ═══ LOGO LOADER ══════════════════════════════════════════
+(function(){
+  const wide=document.getElementById('nav-logo-wide-img');
+  const icon=document.getElementById('nav-logo-icon-img');
+  const text=document.getElementById('nav-logo-text');
+  if(!wide||!text)return;
+  wide.onload=function(){text.style.display='none';};
+  wide.onerror=function(){wide.style.display='none';};
+  if(icon)icon.onerror=function(){icon.style.display='none';};
+  if(wide.complete&&wide.naturalWidth>0)text.style.display='none';
+})();
 
 // ═══ BOOT ═════════════════════════════════════════════════
 navigate('home');
