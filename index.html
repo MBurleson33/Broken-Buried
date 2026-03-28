@@ -17,7 +17,7 @@
 <meta name="twitter:title" content="Broken + Buried" id="tw-title" />
 <meta name="twitter:description" content="We are all broken. We are not forgotten." id="tw-desc" />
 <meta name="twitter:image" content="https://broken-buried.vercel.app/og-default.jpg" id="tw-image" />
-<link rel="icon" href="/images/B+B_white.webp" type="image/webp" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='black'/><text y='.9em' font-size='70' fill='white' font-family='serif'>✝</text></svg>" />
 <script type="application/ld+json" id="json-ld">{"@context":"https://schema.org","@type":"WebSite","name":"Broken + Buried","url":"https://broken-buried.vercel.app"}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -25,10 +25,10 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <style>
-:root{--black:#0a0a0a;--dark:#111111;--mid:#1a1a1a;--surface:#222222;--border:rgba(255,255,255,0.08);--white:#f5f2ee;--off-white:#c8c4be;--muted:#7a7670;--accent:#b8a98a;--accent2:#8c7b5e;--font-display:'Cinzel',serif;--font-body:'EB Garamond',serif;--font-editorial:'Cormorant Garamond',serif;--max-w:1280px;--reading-w:720px;--nav-h:64px}
+:root{--black:#0a0a0a;--dark:#111111;--mid:#1a1a1a;--surface:#222222;--border:rgba(255,255,255,0.08);--white:#f5f2ee;--off-white:#c8c4be;--muted:#7a7670;--accent:#b8a98a;--accent2:#8c7b5e;--font-display:'Cinzel',serif;--font-body:'EB Garamond',serif;--font-editorial:'Cormorant Garamond',serif;--max-w:1280px;--reading-w:900px;--nav-h:64px}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
-body{background:var(--black);color:var(--white);font-family:var(--font-body);font-size:clamp(17px,2.5vw,20px);line-height:1.75;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+body{background:var(--black);color:var(--white);font-family:var(--font-body);font-size:clamp(18px,2.5vw,22px);line-height:1.8;overflow-x:hidden;-webkit-font-smoothing:antialiased}
 a{color:inherit;text-decoration:none}
 img{display:block;max-width:100%}
 button{cursor:pointer;border:none;background:none;font:inherit;color:inherit}
@@ -49,8 +49,8 @@ input,textarea{font:inherit;color:inherit;background:none;border:none;outline:no
 
 /* Logo — wide image on desktop, stacked icon on mobile */
 .nav-logo{display:flex;align-items:center;cursor:pointer;flex-shrink:0;user-select:none}
-.nav-logo-wide{height:28px;width:auto;display:block}
-.nav-logo-icon{height:32px;width:auto;display:none}
+.nav-logo-wide{height:36px;width:auto;display:block}
+.nav-logo-icon{height:40px;width:auto;display:none}
 
 /* Right side: links + divider + search */
 .nav-right-group{display:flex;align-items:center;gap:0}
@@ -122,7 +122,7 @@ input,textarea{font:inherit;color:inherit;background:none;border:none;outline:no
 .about-image{position:relative;background:var(--dark);display:flex;align-items:center;justify-content:center;overflow:hidden;min-height:clamp(280px,40vw,420px)}
 .about-texture{position:absolute;inset:0;background:radial-gradient(ellipse at 30% 30%,rgba(80,70,55,.3) 0%,transparent 60%)}
 /* Use the stacked B+B logo image */
-.about-logo-img{position:relative;z-index:1;width:clamp(120px,20vw,220px);height:auto;filter:drop-shadow(0 0 40px rgba(0,0,0,.6))}
+.about-logo-img{position:relative;z-index:1;width:clamp(90px,14vw,160px);height:auto;filter:drop-shadow(0 0 40px rgba(0,0,0,.6))}
 .about-text{background:var(--mid);display:flex;align-items:center;padding:clamp(2.5rem,5vw,4rem)}
 .about-text p{font-family:var(--font-editorial);font-size:clamp(1.05rem,2vw,1.18rem);color:var(--off-white);line-height:1.9;margin-bottom:1.5rem}
 .about-text p:last-child{margin-bottom:0}
@@ -135,7 +135,7 @@ input,textarea{font:inherit;color:inherit;background:none;border:none;outline:no
 
 /* POSTS GRID */
 #recent-posts-section{background:var(--surface);padding-bottom:clamp(2rem,4vw,4rem)}
-.posts-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(240px,100%),1fr));gap:clamp(1rem,2vw,1.5rem);max-width:var(--max-w);margin:0 auto;padding:0 clamp(1.5rem,4vw,3rem)}
+.posts-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(220px,100%),1fr));gap:clamp(1rem,2vw,1.5rem);max-width:100%;margin:0 auto;padding:0 clamp(1rem,2vw,2rem)}
 .posts-grid.blog-grid{grid-template-columns:repeat(auto-fill,minmax(min(300px,100%),1fr));padding-bottom:clamp(2rem,4vw,4rem)}
 .post-card{background:var(--dark);border:1px solid var(--border);cursor:pointer;transition:transform .35s ease,box-shadow .35s ease;overflow:hidden;display:flex;flex-direction:column}
 .post-card:hover{transform:translateY(-4px);box-shadow:0 20px 60px rgba(0,0,0,.5)}
@@ -183,14 +183,14 @@ input,textarea{font:inherit;color:inherit;background:none;border:none;outline:no
 .post-hero-tags{display:flex;flex-wrap:wrap;justify-content:center;gap:.5rem;margin-bottom:1rem}
 .post-hero-tag{font-family:var(--font-display);font-size:.52rem;letter-spacing:.25em;text-transform:uppercase;color:var(--accent);border:1px solid rgba(184,169,138,.4);padding:.25rem .7rem}
 .post-hero-title{font-family:var(--font-display);font-size:clamp(1.7rem,5vw,4rem);font-weight:600;letter-spacing:.04em;color:var(--white);text-shadow:0 2px 40px rgba(0,0,0,.8);line-height:1.2}
-.post-content-wrap{max-width:var(--reading-w);margin:0 auto;padding:clamp(2rem,5vw,4rem) clamp(1.5rem,5vw,2rem) clamp(3rem,6vw,5rem)}
+.post-content-wrap{max-width:var(--reading-w);margin:0 auto;padding:clamp(2rem,5vw,4rem) clamp(1.5rem,5vw,2rem) clamp(3rem,6vw,5rem);overflow:hidden}
 .post-meta{display:flex;align-items:center;flex-wrap:wrap;gap:1rem;margin-bottom:2.5rem;padding-bottom:1.5rem;border-bottom:1px solid var(--border)}
 .post-meta-date,.post-meta-reading{font-family:var(--font-display);font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
 .post-meta-sep{color:var(--border);font-size:.7rem}
 .share-btn{margin-left:auto;font-family:var(--font-display);font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);border:1px solid rgba(184,169,138,.3);padding:.4rem 1rem;display:flex;align-items:center;gap:.5rem;transition:all .2s;cursor:pointer}
 .share-btn:hover{color:var(--white);border-color:var(--accent)}
 .share-btn svg{width:12px;height:12px}
-article.post-body{font-family:var(--font-editorial);font-size:clamp(1.05rem,2.5vw,1.2rem);color:var(--off-white);line-height:2}
+article.post-body{font-family:var(--font-editorial);font-size:clamp(1.15rem,2.5vw,1.35rem);color:var(--off-white);line-height:2.05}
 article.post-body h1,article.post-body h2,article.post-body h3{font-family:var(--font-display);color:var(--white);letter-spacing:.05em;margin:2.5rem 0 1rem;line-height:1.3}
 article.post-body h1{font-size:clamp(1.5rem,3vw,2rem)}
 article.post-body h2{font-size:clamp(1.25rem,2.5vw,1.6rem)}
@@ -207,9 +207,9 @@ article.post-body hr{border:none;border-top:1px solid var(--border);margin:2.5re
 article.post-body img{max-width:100%;margin:2rem auto;filter:grayscale(20%)}
 
 /* RELATED */
-.related-section{max-width:var(--reading-w);margin:0 auto;padding:3rem clamp(1.5rem,5vw,2rem);border-top:1px solid var(--border)}
+.related-section{max-width:var(--reading-w);margin:2rem auto 0;padding:3rem clamp(1.5rem,5vw,2rem);border-top:1px solid var(--border);display:block;width:100%}
 .related-label{font-family:var(--font-display);font-size:.58rem;letter-spacing:.3em;text-transform:uppercase;color:var(--muted);margin-bottom:1.5rem}
-.related-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(200px,100%),1fr));gap:1rem}
+.related-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(200px,100%),1fr));gap:1rem;width:100%}
 .related-card{cursor:pointer;border:1px solid var(--border);overflow:hidden;transition:border-color .2s,transform .2s}
 .related-card:hover{border-color:var(--accent2);transform:translateY(-2px)}
 .related-card-img{aspect-ratio:16/9;overflow:hidden;background:var(--mid)}
@@ -218,7 +218,7 @@ article.post-body img{max-width:100%;margin:2rem auto;filter:grayscale(20%)}
 .related-card-title{font-family:var(--font-display);font-size:.75rem;letter-spacing:.05em;color:var(--white);padding:.8rem;line-height:1.4}
 
 /* POST NAV */
-.post-nav{display:grid;grid-template-columns:1fr 1fr;gap:1px;max-width:var(--reading-w);margin:0 auto;padding:0 clamp(1.5rem,5vw,2rem) clamp(2rem,4vw,4rem);background:var(--border)}
+.post-nav{display:grid;grid-template-columns:1fr 1fr;gap:1px;max-width:var(--reading-w);margin:0 auto;padding:0 clamp(1.5rem,5vw,2rem) clamp(2rem,4vw,4rem);background:var(--border);position:relative;z-index:1}
 .post-nav-item{cursor:pointer;padding:clamp(1rem,3vw,1.5rem);background:var(--black);transition:background .2s}
 .post-nav-item:hover{background:var(--mid)}
 .post-nav-label{font-family:var(--font-display);font-size:.52rem;letter-spacing:.25em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem}
@@ -291,7 +291,7 @@ article.post-body img{max-width:100%;margin:2rem auto;filter:grayscale(20%)}
 
 /* FOOTER */
 #footer{background:var(--dark);border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1.5rem;padding:clamp(2rem,4vw,3rem) clamp(1.5rem,4vw,3rem)}
-.footer-logo img{height:22px;width:auto;opacity:.8}
+.footer-logo img{height:32px;width:auto;opacity:.9}
 .footer-links{display:flex;gap:clamp(1rem,3vw,2rem);list-style:none;flex-wrap:wrap}
 .footer-links a{font-family:var(--font-display);font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);transition:color .2s}
 .footer-links a:hover{color:var(--white)}
@@ -386,9 +386,7 @@ article.post-body img{max-width:100%;margin:2rem auto;filter:grayscale(20%)}
     <div class="hex-overlay"></div>
     <div id="bokeh-container" aria-hidden="true"></div>
     <div class="hero-content">
-      <div class="hero-rule"></div>
       <img src="/images/Broken+Buried_White.png" alt="Broken + Buried" class="hero-logo-img" />
-      <div class="hero-rule"></div>
       <p class="hero-verse">"For we know that our old self was crucified with him so that the body ruled by sin might be done away with, that we should no longer be slaves to sin." — Romans 6:6</p>
     </div>
     <div class="scroll-indicator" onclick="document.getElementById('about').scrollIntoView({behavior:'smooth'})" aria-hidden="true">
@@ -443,7 +441,6 @@ article.post-body img{max-width:100%;margin:2rem auto;filter:grayscale(20%)}
     <header class="post-hero" id="post-hero">
       <div class="post-hero-gradient"></div>
       <div class="post-hero-content">
-        <div class="post-hero-tags" id="post-hero-tags"></div>
         <h1 class="post-hero-title" id="post-hero-title"></h1>
       </div>
     </header>
@@ -546,13 +543,13 @@ article.post-body img{max-width:100%;margin:2rem auto;filter:grayscale(20%)}
 
 <!-- FOOTER -->
 <footer id="footer">
-  <div class="footer-logo">
-    <img src="/images/Broken+Buried_White.png" alt="Broken + Buried" />
-  </div>
   <ul class="footer-links">
     <li><a onclick="navigate('home')" href="#">Home</a></li>
     <li><a onclick="navigate('blog')" href="#">Blog</a></li>
   </ul>
+  <div class="footer-logo">
+    <img src="/images/Broken+Buried_White.png" alt="Broken + Buried" />
+  </div>
   <div class="footer-copy">© <span id="footer-year"></span> Broken + Buried</div>
 </footer>
 <div id="toast" role="status" aria-live="polite"></div>
@@ -690,10 +687,13 @@ async function loadBlogPosts(){
   filterBlogPosts();
 }
 function renderTagFilters(){
-  const tags=new Set();blogPosts.forEach(p=>(p.tags||[]).forEach(t=>tags.add(t)));
+  // Count tag usage across all posts
+  const tagCount={};
+  blogPosts.forEach(p=>(p.tags||[]).forEach(t=>{tagCount[t]=(tagCount[t]||0)+1;}));
+  const sorted=Object.entries(tagCount).sort((a,b)=>b[1]-a[1]).slice(0,25).map(([t])=>t);
   const row=document.getElementById('tag-filter-row');
-  if(!tags.size){row.innerHTML='';return;}
-  row.innerHTML=`<span class="tag-filter-label">Filter</span>`+[...tags].map(t=>`<button class="tag-filter-btn" onclick="toggleTagFilter('${esc(t)}')" id="tag-btn-${esc(t)}">${esc(t)}</button>`).join('');
+  if(!sorted.length){row.innerHTML='';return;}
+  row.innerHTML=`<span class="tag-filter-label">Filter</span>`+sorted.map(t=>`<button class="tag-filter-btn" onclick="toggleTagFilter('${esc(t)}')" id="tag-btn-${esc(t)}">${esc(t)}</button>`).join('');
 }
 function toggleTagFilter(tag){
   if(activeTags.has(tag))activeTags.delete(tag);else activeTags.add(tag);
@@ -741,7 +741,7 @@ async function loadPost(slug){
   const hero=document.getElementById('post-hero');
   let img=hero.querySelector('.post-hero-img');
   if(post.cover_image_url){if(!img){img=document.createElement('img');img.className='post-hero-img';hero.insertBefore(img,hero.firstChild);}img.src=post.cover_image_url;img.alt=post.title;}else if(img)img.remove();
-  document.getElementById('post-hero-tags').innerHTML=(post.tags||[]).map(t=>`<span class="post-hero-tag">${esc(t)}</span>`).join('');
+  // Tags not shown on post hero page
   document.getElementById('post-hero-title').textContent=post.title;
   document.getElementById('post-meta-date').textContent=new Date(post.created_at).toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
   document.getElementById('post-meta-reading').textContent=readingTime(post.content);
@@ -826,12 +826,12 @@ async function approveComment(id){await sb.from('comments').update({approved:tru
 async function deleteComment(id){if(!confirm('Delete comment?'))return;await sb.from('comments').delete().eq('id',id);showToast('Deleted.');loadAdminComments();}
 
 // ═══ ADMIN TABS ═══════════════════════════════════════════
-function switchTab(tab){
+function switchTab(tab, skipClear=false){
   document.querySelectorAll('.tab-btn').forEach((b,i)=>b.classList.toggle('active',['posts','comments','new'][i]===tab));
   ['posts','comments','new'].forEach(t=>document.getElementById(`tab-${t}`).classList.toggle('hidden',t!==tab));
   if(tab==='posts')loadAdminPosts();
   if(tab==='comments')loadAdminComments();
-  if(tab==='new')clearEditor();
+  if(tab==='new'&&!skipClear)clearEditor();
 }
 
 // ═══ IMAGE UPLOAD ═════════════════════════════════════════
@@ -871,7 +871,7 @@ function editPost(post){
   const preview=document.getElementById('cover-preview');
   if(post.cover_image_url){preview.src=post.cover_image_url;preview.style.display='block';document.getElementById('cover-upload-label').textContent='Tap to replace image';}
   else{preview.style.display='none';document.getElementById('cover-upload-label').textContent='Tap to upload a cover image';}
-  isPublished=post.published||false;updatePublishToggle();switchTab('new');
+  isPublished=post.published||false;updatePublishToggle();switchTab('new',true);
 }
 function cancelEdit(){clearEditor();switchTab('posts');}
 function updateSlugFromTitle(){if(!document.getElementById('edit-post-id').value)document.getElementById('editor-slug').value=document.getElementById('editor-title').value.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');}
