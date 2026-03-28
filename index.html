@@ -218,15 +218,15 @@ article.post-body img{max-width:100%;margin:2rem auto;filter:grayscale(20%)}
 .related-card-title{font-family:var(--font-display);font-size:.75rem;letter-spacing:.05em;color:var(--white);padding:.8rem;line-height:1.4}
 
 /* POST NAV */
-.post-nav{display:grid;grid-template-columns:1fr 1fr;gap:1px;max-width:var(--reading-w);margin:0 auto;padding:0 clamp(1rem,2vw,1.5rem) clamp(2rem,4vw,4rem);background:var(--border);position:relative;z-index:1}
-.post-nav-item{cursor:pointer;padding:clamp(1rem,3vw,1.5rem);background:var(--black);transition:background .2s}
-.post-nav-item:hover{background:var(--mid)}
+.post-nav{display:grid;grid-template-columns:1fr 1fr;gap:1px;width:100%;background:var(--border);overflow:hidden;margin-bottom:0}
+.post-nav-item{cursor:pointer;padding:clamp(1.2rem,3vw,1.8rem) clamp(1rem,2vw,1.5rem);background:var(--dark);transition:background .2s}
+.post-nav-item:hover{background:var(--surface)}
 .post-nav-label{font-family:var(--font-display);font-size:.52rem;letter-spacing:.25em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem}
 .post-nav-title{font-family:var(--font-display);font-size:.85rem;color:var(--white);line-height:1.4}
 .post-nav-item.next{text-align:right}
 
 /* COMMENTS */
-.comments-section{max-width:var(--reading-w);margin:0 auto;padding:0 clamp(1rem,2vw,1.5rem) clamp(3rem,6vw,5rem)}
+.comments-section{max-width:var(--reading-w);margin:0 auto;padding:3rem clamp(1rem,2vw,1.5rem) clamp(3rem,6vw,5rem);border-top:none}
 .comments-title{font-family:var(--font-display);font-size:.68rem;letter-spacing:.3em;text-transform:uppercase;color:var(--muted);margin-bottom:2rem;padding-bottom:1rem;border-bottom:1px solid var(--border)}
 .comment-form{margin-bottom:3rem}
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
@@ -461,7 +461,9 @@ article.post-body img{max-width:100%;margin:2rem auto;filter:grayscale(20%)}
     <div class="related-label">Related Posts</div>
     <div class="related-grid" id="related-grid"></div>
   </section>
-  <nav class="post-nav" id="post-nav"></nav>
+  <div style="max-width:var(--reading-w);margin:0 auto;padding:0 clamp(1rem,2vw,1.5rem);">
+    <nav class="post-nav" id="post-nav"></nav>
+  </div>
   <section class="comments-section">
     <div class="comments-title">Discussion</div>
     <div class="comment-form">
