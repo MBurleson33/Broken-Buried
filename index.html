@@ -471,7 +471,7 @@ article.post-body img{max-width:100%;margin:2rem auto;filter:grayscale(20%)}
   <div class="admin-tabs">
     <button class="tab-btn active" onclick="switchTab('posts')">All Posts</button>
     <button class="tab-btn" onclick="switchTab('comments')">Comments</button>
-    <button class="tab-btn" onclick="switchTab('new')">New Post</button>
+    <button onclick="clearEditor(); switchTab('new')">New Post</button>
   </div>
   <div id="tab-posts"><div class="admin-posts-list" id="admin-posts-list"><div class="loading-spinner">Loading</div></div></div>
   <div id="tab-comments" class="hidden"><div id="admin-comments-list"><div class="loading-spinner">Loading</div></div></div>
@@ -801,11 +801,16 @@ async function deleteComment(id){if(!confirm('Delete comment?'))return;await sb.
 
 // ═══ ADMIN TABS ════════════════════════════════════════════
 function switchTab(tab){
-  document.querySelectorAll('.tab-btn').forEach((b,i)=>b.classList.toggle('active',['posts','comments','new'][i]===tab));
-  ['posts','comments','new'].forEach(t=>document.getElementById(`tab-${t}`).classList.toggle('hidden',t!==tab));
-  if(tab==='posts')loadAdminPosts();
-  if(tab==='comments')loadAdminComments();
-  if(tab==='new')clearEditor();
+  document.querySelectorAll('.tab-btn').forEach((b,i)=>
+    b.classList.toggle('active', ['posts','comments','new'][i] === tab)
+  );
+  
+  ['posts','comments','new'].forEach(t =>
+    document.getElementById(`tab-${t}`).classList.toggle('hidden', t !== tab)
+  );
+  
+  if (tab === 'posts') loadAdminPosts();
+  if (tab === 'comments') loadAdminComments();
 }
 
 // ═══ IMAGE UPLOAD ══════════════════════════════════════════
