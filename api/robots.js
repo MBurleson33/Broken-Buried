@@ -4,5 +4,5 @@ export default function handler(req, res) {
   res.status(200).send(`User-agent: *
 Allow: /
 
-Sitemap: https://broken-buried.vercel.app/sitemap.xml`);
+Sitemap: https://brokenandburied.com/sitemap.xml`);
 }
