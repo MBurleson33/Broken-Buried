@@ -71,9 +71,9 @@ input,textarea{font:inherit;color:inherit;background:none;border:none;outline:no
 .nav-hamburger.open span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
 
 /* Mobile dropdown */
-.nav-drawer{display:none;position:absolute;top:calc(100% + .5rem);right:clamp(1rem,4vw,1.5rem);background:rgba(15,15,15,0.97);backdrop-filter:blur(16px);border:1px solid var(--border);z-index:150;flex-direction:column;min-width:160px;transform:translateY(-6px);opacity:0;transition:opacity .2s ease,transform .2s ease}
-.nav-drawer.open{display:flex;opacity:1;transform:translateY(0)}
-.nav-drawer a{font-family:var(--font-display);font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--off-white);padding:1rem 1.5rem;border-bottom:1px solid var(--border);transition:color .2s,background .2s}
+.nav-drawer{display:flex;position:fixed;top:var(--nav-h);right:0;left:0;background:rgba(10,10,10,0.97);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);z-index:150;flex-direction:column;min-width:100%;transform:translateY(-10px);opacity:0;pointer-events:none;transition:opacity .25s ease,transform .25s ease}
+.nav-drawer.open{opacity:1;transform:translateY(0);pointer-events:all}
+.nav-drawer a{font-family:var(--font-display);font-size:.75rem;letter-spacing:.2em;text-transform:uppercase;color:var(--off-white);padding:1.2rem 2rem;border-bottom:1px solid var(--border);transition:color .2s,background .2s;display:block}
 .nav-drawer a:last-child{border-bottom:none}
 .nav-drawer a:hover{color:var(--white);background:rgba(255,255,255,.04)}
 
@@ -298,6 +298,17 @@ article.post-body img{max-width:100%;margin:2rem auto;filter:grayscale(20%)}
 .footer-links a:hover{color:var(--white)}
 .footer-copy{font-family:var(--font-display);font-size:.52rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted)}
 
+/* PRAYER PAGE */
+#prayer-page{padding-top:calc(var(--nav-h) + 4rem);min-height:100vh;max-width:680px;margin:0 auto;padding-left:clamp(1.5rem,4vw,3rem);padding-right:clamp(1.5rem,4vw,3rem);padding-bottom:6rem}
+.prayer-title{font-family:var(--font-display);font-size:clamp(1.8rem,4vw,3rem);font-weight:600;letter-spacing:.05em;color:var(--white);margin-bottom:.8rem}
+.prayer-subtitle{font-family:var(--font-editorial);font-style:italic;color:var(--muted);font-size:clamp(1rem,2vw,1.15rem);margin-bottom:.8rem;line-height:1.7}
+.prayer-verse{font-family:var(--font-editorial);font-style:italic;color:var(--accent2);font-size:clamp(.9rem,1.8vw,1rem);margin-bottom:3rem;padding:1.2rem 1.5rem;border-left:2px solid var(--accent2);background:rgba(255,255,255,.02)}
+.prayer-form{display:flex;flex-direction:column;gap:1.5rem}
+.prayer-success{display:none;text-align:center;padding:3rem 2rem;border:1px solid var(--accent2);background:rgba(140,123,94,.05)}
+.prayer-success-icon{font-size:2.5rem;margin-bottom:1rem}
+.prayer-success h3{font-family:var(--font-display);font-size:1rem;letter-spacing:.1em;color:var(--white);margin-bottom:.8rem}
+.prayer-success p{font-family:var(--font-editorial);font-style:italic;color:var(--muted);font-size:1.05rem}
+
 /* BACK TO TOP */
 #back-top{position:fixed;bottom:2rem;right:2rem;z-index:50;width:40px;height:40px;background:var(--mid);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;transform:translateY(10px);transition:opacity .3s,transform .3s,background .2s;pointer-events:none}
 #back-top.visible{opacity:1;transform:translateY(0);pointer-events:all}
@@ -353,6 +364,7 @@ article.post-body img{max-width:100%;margin:2rem auto;filter:grayscale(20%)}
     <ul class="nav-center">
       <li><a onclick="navigate('home');return false;" href="/" id="nav-home">Home</a></li>
       <li><a onclick="navigate('blog');return false;" href="/blog" id="nav-blog">Blog</a></li>
+      <li><a onclick="navigate('prayer');return false;" href="/prayer" id="nav-prayer">Prayer</a></li>
     </ul>
     <div class="nav-divider"></div>
     <button class="nav-search-btn" onclick="openSearch()" aria-label="Search">
@@ -366,6 +378,7 @@ article.post-body img{max-width:100%;margin:2rem auto;filter:grayscale(20%)}
 <div class="nav-drawer" id="nav-drawer">
   <a onclick="navigate('home');toggleDrawer();return false;" href="/">Home</a>
   <a onclick="navigate('blog');toggleDrawer();return false;" href="/blog">Blog</a>
+  <a onclick="navigate('prayer');toggleDrawer();return false;" href="/prayer">Prayer</a>
   <a onclick="openSearch();toggleDrawer()" href="#">Search</a>
 </div>
 
@@ -481,6 +494,43 @@ article.post-body img{max-width:100%;margin:2rem auto;filter:grayscale(20%)}
   </section>
 </main>
 
+<!-- PRAYER PAGE -->
+<main id="prayer-page" class="hidden">
+  <h1 class="prayer-title">Request Prayer</h1>
+  <p class="prayer-subtitle">You are not alone. Whatever you are carrying, bring it here. We believe in the power of prayer and we will lift you up by name.</p>
+  <div class="prayer-verse">"Do not be anxious about anything, but in every situation, by prayer and petition, with thanksgiving, present your requests to God." — Philippians 4:6</div>
+
+  <div class="prayer-success" id="prayer-success">
+    <div class="prayer-success-icon">✝</div>
+    <h3>Your Request Has Been Received</h3>
+    <p>We are honored to stand with you in prayer. May God meet you right where you are.</p>
+  </div>
+
+  <form class="prayer-form" id="prayer-form">
+    <div class="form-row">
+      <div class="form-group">
+        <label for="prayer-name">Your Name</label>
+        <input type="text" id="prayer-name" placeholder="Your name" autocomplete="name" />
+      </div>
+      <div class="form-group">
+        <label for="prayer-email">Email (optional)</label>
+        <input type="email" id="prayer-email" placeholder="your@email.com" autocomplete="email" />
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="prayer-request">Prayer Request</label>
+      <textarea id="prayer-request" placeholder="Share what is on your heart…" style="min-height:200px;background:var(--mid);border:1px solid var(--border);padding:.8rem 1rem;resize:vertical;width:100%;color:var(--white);font-family:var(--font-editorial);font-size:clamp(1rem,2vw,1.05rem);transition:border-color .2s;"></textarea>
+    </div>
+    <div class="form-group" style="display:flex;align-items:center;gap:.8rem;">
+      <input type="checkbox" id="prayer-anonymous" style="width:16px;height:16px;accent-color:var(--accent2);flex-shrink:0;" />
+      <label for="prayer-anonymous" style="font-family:var(--font-display);font-size:.58rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);cursor:pointer;margin-bottom:0;">Keep my name anonymous</label>
+    </div>
+    <div>
+      <button class="btn-submit" onclick="submitPrayer(event)">Submit Prayer Request</button>
+    </div>
+  </form>
+</main>
+
 <!-- AUTH GATE -->
 <main id="auth-gate" class="hidden">
   <div class="auth-box">
@@ -551,6 +601,7 @@ article.post-body img{max-width:100%;margin:2rem auto;filter:grayscale(20%)}
   <ul class="footer-links">
     <li><a onclick="navigate('home');return false;" href="/">Home</a></li>
     <li><a onclick="navigate('blog');return false;" href="/blog">Blog</a></li>
+    <li><a onclick="navigate('prayer');return false;" href="/prayer">Prayer</a></li>
   </ul>
   <div class="footer-copy">© <span id="footer-year"></span> Broken + Buried</div>
 </footer>
@@ -561,6 +612,7 @@ article.post-body img{max-width:100%;margin:2rem auto;filter:grayscale(20%)}
 const SUPABASE_URL='https://olhpiqxxofcwlkpvimug.supabase.co';
 const SUPABASE_ANON_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9saHBpcXh4b2Zjd2xrcHZpbXVnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ1NzgxMzgsImV4cCI6MjA5MDE1NDEzOH0.7t8CE_VxXzHCEpLIFOiwRFbgsWQWRQ42QxlESgE1tGQ';
 const SITE_URL='https://brokenandburied.com';
+const DEFAULT_OG_IMAGE='https://brokenandburied.com/images/og-default.jpg';
 const VALID_HASH='cb05b7b8288d7cf865b23dd0b0ad484859b3dc72a53b5396086df29493459ddf';
 
 // ═══ INIT ═════════════════════════════════════════════════
@@ -600,7 +652,7 @@ function updateSEO({title,description,image,url,type='website',jsonld}){
     if(id==='og-type')el.setAttribute('content',type);
     else if(id.includes('title'))el.setAttribute('content',title);
     else if(id.includes('desc'))el.setAttribute('content',description);
-    else if(id.includes('image'))el.setAttribute('content',image||`${SITE_URL}/og-default.jpg`);
+    else if(id.includes('image'))el.setAttribute('content',image||DEFAULT_OG_IMAGE);
     else if(id==='og-url')el.setAttribute('content',url);
   });
   if(jsonld)document.getElementById('json-ld').textContent=JSON.stringify(jsonld);
@@ -649,7 +701,7 @@ function highlight(text,query){
 }
 
 // ═══ ROUTER ═══════════════════════════════════════════════
-const pages=['home-page','blog-page','post-page','auth-gate','admin-page'];
+const pages=['home-page','blog-page','post-page','prayer-page','auth-gate','admin-page'];
 
 function showPage(id){
   pages.forEach(p=>document.getElementById(p).classList.add('hidden'));
@@ -666,16 +718,20 @@ function navigate(target, slug, pushState=true){
     if(pushState) history.pushState({target:'home'}, '', '/');
     showPage('home-page');
     loadHomePosts();
-    updateSEO({title:'Broken + Buried',description:'Broken + Buried — we bury ourselves daily so that we may start new every day.',url:SITE_URL});
+    updateSEO({title:'Broken + Buried',description:'Broken + Buried — we bury ourselves daily so that we may start new every day.',url:SITE_URL,image:DEFAULT_OG_IMAGE});
   } else if(target==='blog'){
     if(pushState) history.pushState({target:'blog'}, '', '/blog');
     showPage('blog-page');
     loadBlogPosts();
-    updateSEO({title:'Blog — Broken + Buried',description:'All posts from Broken + Buried.',url:`${SITE_URL}/blog`});
+    updateSEO({title:'Blog — Broken + Buried',description:'All posts from Broken + Buried.',url:`${SITE_URL}/blog`,image:DEFAULT_OG_IMAGE});
   } else if(target==='post' && slug){
     if(pushState) history.pushState({target:'post', slug}, '', `/post/${slug}`);
     showPage('post-page');
     loadPost(slug);
+  } else if(target==='prayer'){
+    if(pushState) history.pushState({target:'prayer'}, '', '/prayer');
+    showPage('prayer-page');
+    updateSEO({title:'Request Prayer — Broken + Buried',description:'Submit a prayer request to Broken + Buried.',url:`${SITE_URL}/prayer`,image:DEFAULT_OG_IMAGE});
   } else if(target==='admin'){
     checkAdminAuth();
   }
@@ -710,6 +766,8 @@ function routeFromURL(){
     const slug = path.replace('/post/', '').replace(/\/+$/, '');
     if(slug) navigate('post', slug, false);
     else navigate('home', null, false);
+  } else if(path === '/prayer'){
+    navigate('prayer', null, false);
   } else if(path === '/admin'){
     navigate('admin', null, false);
   } else {
@@ -943,6 +1001,43 @@ async function savePost(){
   allPosts=[];showToast(id?'Post updated.':'Post created.');clearEditor();switchTab('posts');
 }
 function insertMd(before,after){const ta=document.getElementById('editor-content');const s=ta.selectionStart,e=ta.selectionEnd;const sel=ta.value.substring(s,e);ta.value=ta.value.substring(0,s)+before+sel+after+ta.value.substring(e);ta.focus();ta.selectionStart=s+before.length;ta.selectionEnd=e+before.length;}
+
+// ═══ PRAYER REQUEST ═══════════════════════════════════════
+async function submitPrayer(e){
+  e.preventDefault();
+  const name = document.getElementById('prayer-name').value.trim();
+  const email = document.getElementById('prayer-email').value.trim();
+  const request = document.getElementById('prayer-request').value.trim();
+  const anonymous = document.getElementById('prayer-anonymous').checked;
+  if(!request){showToast('Please share your prayer request.');return;}
+  const btn = e.target;
+  btn.textContent = 'Submitting…';
+  btn.disabled = true;
+  try {
+    // Save to Supabase
+    const{error} = await sb.from('prayer_requests').insert({
+      name: anonymous ? 'Anonymous' : (name || 'Anonymous'),
+      email: email || null,
+      request,
+      anonymous,
+      created_at: new Date().toISOString()
+    });
+    if(error) throw error;
+    // Send email notification via API
+    await fetch('/api/prayer', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({name: anonymous ? 'Anonymous' : (name||'Anonymous'), request})
+    });
+    // Show success
+    document.getElementById('prayer-form').style.display = 'none';
+    document.getElementById('prayer-success').style.display = 'block';
+  } catch(err){
+    showToast('Something went wrong. Please try again.');
+    btn.textContent = 'Submit Prayer Request';
+    btn.disabled = false;
+  }
+}
 
 // ═══ UTILS ════════════════════════════════════════════════
 function esc(str){if(!str)return '';return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
