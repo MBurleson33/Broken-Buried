@@ -652,21 +652,62 @@ function highlight(text,query){
 
 // ═══ ROUTER ═══════════════════════════════════════════════
 const pages=['home-page','blog-page','post-page','auth-gate','admin-page'];
+
 function showPage(id){
   pages.forEach(p=>document.getElementById(p).classList.add('hidden'));
   document.getElementById(id).classList.remove('hidden');
   document.getElementById('footer').classList.toggle('hidden',id==='auth-gate'||id==='admin-page');
   window.scrollTo(0,0);
-  // Reset nav to transparent when at top
   document.getElementById('nav').classList.remove('scrolled');
   document.getElementById('nav-home')?.classList.toggle('active',id==='home-page');
   document.getElementById('nav-blog')?.classList.toggle('active',id==='blog-page');
 }
-function navigate(target,slug){
-  if(target==='home'){showPage('home-page');loadHomePosts();updateSEO({title:'Broken + Buried',description:'Broken + Buried — we bury ourselves daily so that we may start new every day.',url:SITE_URL});}
-  else if(target==='blog'){showPage('blog-page');loadBlogPosts();updateSEO({title:'Blog — Broken + Buried',description:'All posts from Broken + Buried.',url:`${SITE_URL}/blog`});}
-  else if(target==='post'&&slug){showPage('post-page');loadPost(slug);}
-  else if(target==='admin'){checkAdminAuth();}
+
+function navigate(target, slug, pushState=true){
+  if(target==='home'){
+    if(pushState) history.pushState({target:'home'}, '', '/');
+    showPage('home-page');
+    loadHomePosts();
+    updateSEO({title:'Broken + Buried',description:'Broken + Buried — we bury ourselves daily so that we may start new every day.',url:SITE_URL});
+  } else if(target==='blog'){
+    if(pushState) history.pushState({target:'blog'}, '', '/blog');
+    showPage('blog-page');
+    loadBlogPosts();
+    updateSEO({title:'Blog — Broken + Buried',description:'All posts from Broken + Buried.',url:`${SITE_URL}/blog`});
+  } else if(target==='post' && slug){
+    if(pushState) history.pushState({target:'post', slug}, '', `/post/${slug}`);
+    showPage('post-page');
+    loadPost(slug);
+  } else if(target==='admin'){
+    checkAdminAuth();
+  }
+}
+
+// Handle browser back/forward
+window.addEventListener('popstate', function(e){
+  if(e.state){
+    navigate(e.state.target, e.state.slug, false);
+  } else {
+    navigate('home', null, false);
+  }
+});
+
+// Read current URL and route to correct page on load
+function routeFromURL(){
+  const path = window.location.pathname;
+  if(path === '/' || path === ''){
+    navigate('home', null, false);
+  } else if(path === '/blog'){
+    navigate('blog', null, false);
+  } else if(path.startsWith('/post/')){
+    const slug = path.replace('/post/', '').replace(/\/+$/, '');
+    if(slug) navigate('post', slug, false);
+    else navigate('home', null, false);
+  } else if(path === '/admin'){
+    navigate('admin', null, false);
+  } else {
+    navigate('home', null, false);
+  }
 }
 
 // ═══ POSTS CACHE ══════════════════════════════════════════
@@ -913,7 +954,7 @@ function showToast(msg){const t=document.getElementById('toast');t.textContent=m
 })();
 
 // ═══ BOOT ═════════════════════════════════════════════════
-navigate('home');
+routeFromURL();
 </script>
 </body>
 </html>
