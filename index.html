@@ -119,8 +119,8 @@ input,textarea{font:inherit;color:inherit;background:none;border:none;outline:no
 .scroll-arrow{width:7px;height:7px;border-right:1px solid var(--accent);border-bottom:1px solid var(--accent);transform:rotate(45deg)}
 
 /* ABOUT */
-#about{display:grid;grid-template-columns:1fr 1fr}
-.about-image{position:relative;background:var(--dark);display:flex;align-items:center;justify-content:center;overflow:hidden;min-height:clamp(280px,40vw,420px)}
+#about{display:grid;grid-template-columns:2fr 3fr}
+.about-image{position:relative;background:var(--dark);display:flex;align-items:center;justify-content:center;overflow:hidden;min-height:clamp(240px,30vw,360px)}
 .about-texture{position:absolute;inset:0;background:radial-gradient(ellipse at 30% 30%,rgba(40,35,25,.6) 0%,rgba(10,10,10,.4) 100%),url("/images/Texturelabs_Paper_176M.jpg");background-size:cover;background-position:center}
 /* Use the stacked B+B logo image */
 .about-logo-img{position:relative;z-index:1;width:clamp(90px,14vw,160px);height:auto;filter:drop-shadow(0 0 40px rgba(0,0,0,.6))}
@@ -322,6 +322,7 @@ article.post-body img{max-width:100%;margin:2rem auto;filter:grayscale(20%)}
   .nav-logo-wide{display:none}
   .nav-logo-icon{display:block}
   #about{grid-template-columns:1fr}
+  .about-image{display:none}
   .form-row{grid-template-columns:1fr}
   .admin-post-actions{width:100%}
   .post-nav{grid-template-columns:1fr}
