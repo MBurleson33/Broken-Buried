@@ -4,8 +4,8 @@ const SITE_URL = 'https://broken-buried.vercel.app';
 
 export default async function handler(req, res) {
   const sb = createClient(
-    process.env.SUPABASE_URL,
-    process.env.SUPABASE_ANON_KEY
+    process.env.https://olhpiqxxofcwlkpvimug.supabase.co,
+    process.env.eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9saHBpcXh4b2Zjd2xrcHZpbXVnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ1NzgxMzgsImV4cCI6MjA5MDE1NDEzOH0.7t8CE_VxXzHCEpLIFOiwRFbgsWQWRQ42QxlESgE1tGQ
   );
 
   const { data: posts } = await sb
