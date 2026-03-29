@@ -1,6 +1,6 @@
 import { createClient } from '@supabase/supabase-js';
 
-const SITE_URL = 'https://broken-buried.vercel.app';
+const SITE_URL = 'https://brokenandburied.com';
 
 export default async function handler(req, res) {
   const sb = createClient(
