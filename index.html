@@ -342,7 +342,7 @@ article.post-body img{max-width:100%;margin:2rem auto;filter:grayscale(20%)}
 <!-- NAV -->
 <nav id="nav" style="position:relative;">
   <!-- Logo left -->
-  <div class="nav-logo" onclick="navigate('home')">
+  <div class="nav-logo" onclick="navigate('home');return false;">
     <img src="/images/Broken+Buried_White.png" alt="" class="nav-logo-wide" onerror="this.style.display='none'" onload="document.querySelectorAll('.nav-logo-text').forEach(el=>el.style.display='none')" />
     <img src="/images/B+B_white.webp" alt="" class="nav-logo-icon" onerror="this.style.display='none'" />
     <span class="nav-logo-text">Broken + Buried</span>
@@ -350,8 +350,8 @@ article.post-body img{max-width:100%;margin:2rem auto;filter:grayscale(20%)}
   <!-- Right group: nav links | divider | search -->
   <div class="nav-right-group">
     <ul class="nav-center">
-      <li><a onclick="navigate('home')" href="#" id="nav-home">Home</a></li>
-      <li><a onclick="navigate('blog')" href="#" id="nav-blog">Blog</a></li>
+      <li><a onclick="navigate('home');return false;" href="/" id="nav-home">Home</a></li>
+      <li><a onclick="navigate('blog');return false;" href="/blog" id="nav-blog">Blog</a></li>
     </ul>
     <div class="nav-divider"></div>
     <button class="nav-search-btn" onclick="openSearch()" aria-label="Search">
@@ -363,8 +363,8 @@ article.post-body img{max-width:100%;margin:2rem auto;filter:grayscale(20%)}
   </div>
 </nav>
 <div class="nav-drawer" id="nav-drawer">
-  <a onclick="navigate('home');toggleDrawer()" href="#">Home</a>
-  <a onclick="navigate('blog');toggleDrawer()" href="#">Blog</a>
+  <a onclick="navigate('home');toggleDrawer();return false;" href="/">Home</a>
+  <a onclick="navigate('blog');toggleDrawer();return false;" href="/blog">Blog</a>
   <a onclick="openSearch();toggleDrawer()" href="#">Search</a>
 </div>
 
@@ -548,8 +548,8 @@ article.post-body img{max-width:100%;margin:2rem auto;filter:grayscale(20%)}
 <!-- FOOTER -->
 <footer id="footer">
   <ul class="footer-links">
-    <li><a onclick="navigate('home')" href="#">Home</a></li>
-    <li><a onclick="navigate('blog')" href="#">Blog</a></li>
+    <li><a onclick="navigate('home');return false;" href="/">Home</a></li>
+    <li><a onclick="navigate('blog');return false;" href="/blog">Blog</a></li>
   </ul>
   <div class="footer-logo">
     <img src="/images/Broken+Buried_White.png" alt="" onerror="this.style.display='none'" />
@@ -683,6 +683,15 @@ function navigate(target, slug, pushState=true){
   }
 }
 
+// Intercept all internal anchor clicks so href="#" never fires
+document.addEventListener('click', function(e){
+  const a = e.target.closest('a[href]');
+  if(!a) return;
+  const href = a.getAttribute('href');
+  if(!href || href.startsWith('http') || href.startsWith('mailto')) return;
+  e.preventDefault();
+});
+
 // Handle browser back/forward
 window.addEventListener('popstate', function(e){
   if(e.state){
@@ -697,7 +706,7 @@ function routeFromURL(){
   const path = window.location.pathname;
   if(path === '/' || path === ''){
     navigate('home', null, false);
-  } else if(path === '/blog'){
+  } else if(path === '/blog' || path === '/blog/'){
     navigate('blog', null, false);
   } else if(path.startsWith('/post/')){
     const slug = path.replace('/post/', '').replace(/\/+$/, '');
