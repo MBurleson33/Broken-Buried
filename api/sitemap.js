@@ -1,28 +1,31 @@
-const { createClient } = require('@supabase/supabase-js');
-
 const SITE_URL = 'https://brokenandburied.com';
 
 module.exports = async function handler(req, res) {
   try {
-    const sb = createClient(
-      process.env.SUPABASE_URL,
-      process.env.SUPABASE_ANON_KEY
+    const supabaseUrl = process.env.SUPABASE_URL;
+    const supabaseKey = process.env.SUPABASE_ANON_KEY;
+
+    // Fetch published posts directly via Supabase REST API — no package needed
+    const response = await fetch(
+      `${supabaseUrl}/rest/v1/posts?select=slug,updated_at,created_at&published=eq.true&order=created_at.desc`,
+      {
+        headers: {
+          'apikey': supabaseKey,
+          'Authorization': `Bearer ${supabaseKey}`,
+        }
+      }
     );
 
-    const { data: posts } = await sb
-      .from('posts')
-      .select('slug, updated_at, created_at')
-      .eq('published', true)
-      .order('created_at', { ascending: false });
+    const posts = await response.json();
 
     const staticPages = [
       { url: '/',     changefreq: 'daily',  priority: '1.0' },
       { url: '/blog', changefreq: 'daily',  priority: '0.9' },
     ];
 
-    const postPages = (posts || []).map(p => ({
+    const postPages = (Array.isArray(posts) ? posts : []).map(p => ({
       url: `/post/${p.slug}`,
-      lastmod: (p.updated_at || p.created_at).split('T')[0],
+      lastmod: (p.updated_at || p.created_at || '').split('T')[0],
       changefreq: 'weekly',
       priority: '0.8',
     }));
@@ -44,6 +47,6 @@ ${allPages.map(p => `  <url>
     res.status(200).send(xml);
 
   } catch (err) {
-    res.status(500).send('Sitemap generation failed: ' + err.message);
+    res.status(500).send('Sitemap error: ' + err.message);
   }
 };
