@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://broken-buried.vercel.app/sitemap.xml
