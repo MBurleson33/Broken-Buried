@@ -17,8 +17,8 @@
 <meta name="twitter:title" content="Broken + Buried" id="tw-title" />
 <meta name="twitter:description" content="We are all broken. We are not forgotten." id="tw-desc" />
 <meta name="twitter:image" content="https://brokenandburied.com/images/og-default.jpg" id="tw-image" />
-<link rel="icon" href="/images/B+B_black.webp" type="image/webp" sizes="any" />
-<link rel="apple-touch-icon" href="/images/B+B_black.webp" />
+<link rel="icon" href="/images/B+B FavIcon.png" type="image/png" sizes="32x32" />
+<link rel="apple-touch-icon" href="/images/B+B FavIcon.png" />
 <script type="application/ld+json" id="json-ld">{"@context":"https://schema.org","@type":"WebSite","name":"Broken + Buried","url":"https://broken-buried.vercel.app"}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -636,7 +636,7 @@ document.getElementById('footer-year').textContent=new Date().getFullYear();
 let currentPostSlug=null,currentPostId=null,isPublished=false,allPosts=[],activeTags=new Set();
 
 // Bokeh
-(function(){const c=document.getElementById('bokeh-container');c.style.cssText='position:absolute;inset:0;pointer-events:none;';for(let i=0;i<18;i++){const el=document.createElement('div');el.className='bokeh';const s=Math.random()*120+30;el.style.cssText=`width:${s}px;height:${s}px;left:${Math.random()*100}%;top:${Math.random()*100+100}%;animation-duration:${Math.random()*20+15}s;animation-delay:${Math.random()*-20}s;`;c.appendChild(el);}})();
+(function(){const c=document.getElementById('bokeh-container');if(!c)return;c.style.cssText='position:absolute;inset:0;pointer-events:none;';for(let i=0;i<18;i++){const el=document.createElement('div');el.className='bokeh';const s=Math.random()*120+30;el.style.cssText=`width:${s}px;height:${s}px;left:${Math.random()*100}%;top:${Math.random()*100+100}%;animation-duration:${Math.random()*20+15}s;animation-delay:${Math.random()*-20}s;`;c.appendChild(el);}})();
 
 // Scroll events
 window.addEventListener('scroll',()=>{
