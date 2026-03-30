@@ -289,6 +289,13 @@ article.post-body img{max-width:100%;margin:2rem auto;filter:grayscale(20%)}
 .comment-mod-post{font-family:var(--font-display);font-size:.58rem;letter-spacing:.1em;color:var(--muted)}
 .comment-mod-body{font-family:var(--font-editorial);font-size:1rem;color:var(--off-white);line-height:1.65}
 .comment-mod-actions{display:flex;gap:.5rem}
+.prayer-mod-item{display:flex;flex-direction:column;gap:.6rem;padding:1.2rem 1.5rem;background:var(--mid);border:1px solid var(--border);margin-bottom:.5rem}
+.prayer-mod-meta{display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
+.prayer-mod-name{font-family:var(--font-display);font-size:.72rem;letter-spacing:.1em;color:var(--accent)}
+.prayer-mod-date{font-family:var(--font-display);font-size:.52rem;letter-spacing:.15em;color:var(--muted)}
+.prayer-mod-email{font-family:var(--font-display);font-size:.52rem;letter-spacing:.1em;color:var(--muted)}
+.prayer-mod-anon{font-family:var(--font-display);font-size:.48rem;letter-spacing:.15em;text-transform:uppercase;color:var(--accent2);border:1px solid rgba(140,123,94,.3);padding:.15rem .4rem}
+.prayer-mod-body{font-family:var(--font-editorial);font-size:1rem;color:var(--off-white);line-height:1.7}
 
 /* FOOTER */
 #footer{background:var(--dark);border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1.5rem;padding:clamp(1.5rem,3vw,2rem) clamp(1.5rem,4vw,3rem)}
@@ -552,9 +559,14 @@ article.post-body img{max-width:100%;margin:2rem auto;filter:grayscale(20%)}
     <button class="tab-btn active" onclick="switchTab('posts')">All Posts</button>
     <button class="tab-btn" onclick="switchTab('comments')">Comments</button>
     <button class="tab-btn" onclick="switchTab('new')">New Post</button>
+    <button class="tab-btn" onclick="switchTab('prayer')">Prayer Requests</button>
   </div>
   <div id="tab-posts"><div class="admin-posts-list" id="admin-posts-list"><div class="loading-spinner">Loading</div></div></div>
   <div id="tab-comments" class="hidden"><div id="admin-comments-list"><div class="loading-spinner">Loading</div></div></div>
+  <div id="tab-prayer" class="hidden">
+    <div id="admin-prayer-list"><div class="loading-spinner">Loading</div></div>
+  </div>
+
   <div id="tab-new" class="hidden">
     <div class="editor-form">
       <input type="hidden" id="edit-post-id" />
@@ -937,13 +949,53 @@ async function loadAdminComments(){
 async function approveComment(id){await sb.from('comments').update({approved:true}).eq('id',id);showToast('Comment approved.');loadAdminComments();}
 async function deleteComment(id){if(!confirm('Delete comment?'))return;await sb.from('comments').delete().eq('id',id);showToast('Deleted.');loadAdminComments();}
 
+// ═══ ADMIN PRAYER REQUESTS ═══════════════════════════════
+async function loadAdminPrayer(){
+  const list = document.getElementById('admin-prayer-list');
+  list.innerHTML = '<div class="loading-spinner">Loading</div>';
+  const { data, error } = await sb
+    .from('prayer_requests')
+    .select('*')
+    .order('created_at', { ascending: false });
+  if(error || !data){
+    list.innerHTML = '<p style="color:var(--muted);padding:1rem;">Error loading prayer requests. Make sure the prayer_requests table exists in Supabase.</p>';
+    return;
+  }
+  if(!data.length){
+    list.innerHTML = '<p style="color:var(--muted);font-family:var(--font-editorial);font-style:italic;padding:1rem;">No prayer requests yet.</p>';
+    return;
+  }
+  list.innerHTML = data.map(p => {
+    const date = new Date(p.created_at).toLocaleDateString('en-US',{weekday:'short',month:'long',day:'numeric',year:'numeric',hour:'numeric',minute:'2-digit'});
+    return `<div class="prayer-mod-item">
+      <div class="prayer-mod-meta">
+        <span class="prayer-mod-name">${esc(p.name || 'Anonymous')}</span>
+        ${p.anonymous ? '<span class="prayer-mod-anon">Anonymous</span>' : ''}
+        ${p.email ? `<span class="prayer-mod-email">${esc(p.email)}</span>` : ''}
+        <span class="prayer-mod-date">${date}</span>
+        <button class="btn-icon danger" style="margin-left:auto" onclick="deletePrayer('${p.id}')">Delete</button>
+      </div>
+      <div class="prayer-mod-body">${esc(p.request).replace(/
+/g,'<br>')}</div>
+    </div>`;
+  }).join('');
+}
+
+async function deletePrayer(id){
+  if(!confirm('Delete this prayer request?')) return;
+  await sb.from('prayer_requests').delete().eq('id', id);
+  showToast('Deleted.');
+  loadAdminPrayer();
+}
+
 // ═══ ADMIN TABS ═══════════════════════════════════════════
 function switchTab(tab, skipClear=false){
-  document.querySelectorAll('.tab-btn').forEach((b,i)=>b.classList.toggle('active',['posts','comments','new'][i]===tab));
-  ['posts','comments','new'].forEach(t=>document.getElementById(`tab-${t}`).classList.toggle('hidden',t!==tab));
+  document.querySelectorAll('.tab-btn').forEach((b,i)=>b.classList.toggle('active',['posts','comments','new','prayer'][i]===tab));
+  ['posts','comments','new','prayer'].forEach(t=>document.getElementById(`tab-${t}`).classList.toggle('hidden',t!==tab));
   if(tab==='posts')loadAdminPosts();
   if(tab==='comments')loadAdminComments();
   if(tab==='new'&&!skipClear)clearEditor();
+  if(tab==='prayer')loadAdminPrayer();
 }
 
 // ═══ IMAGE UPLOAD ═════════════════════════════════════════
