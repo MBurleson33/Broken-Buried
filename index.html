@@ -975,8 +975,7 @@ async function loadAdminPrayer(){
         <span class="prayer-mod-date">${date}</span>
         <button class="btn-icon danger" style="margin-left:auto" onclick="deletePrayer('${p.id}')">Delete</button>
       </div>
-      <div class="prayer-mod-body">${esc(p.request).replace(/
-/g,'<br>')}</div>
+      <div class="prayer-mod-body">${esc(p.request).split('\n').join('<br>')}</div>
     </div>`;
   }).join('');
 }
