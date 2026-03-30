@@ -591,7 +591,7 @@ article.post-body img{max-width:100%;margin:2rem auto;filter:grayscale(20%)}
           <button class="toolbar-btn" onclick="insertMd('## ','')">H2</button>
           <button class="toolbar-btn" onclick="insertMd('### ','')">H3</button>
           <button class="toolbar-btn" onclick="insertMd('> ','')">Quote</button>
-          <button class="toolbar-btn" onclick="insertMd('\n---\n','')">Divider</button>
+          <button class="toolbar-btn" onclick="insertDivider()">Divider</button>
           <button class="toolbar-btn" onclick="insertMd('[','](url)')">Link</button>
         </div>
         <textarea id="editor-content" placeholder="Write your post in Markdown…"></textarea>
@@ -1052,6 +1052,7 @@ async function savePost(){
   if(error){showToast('Error: '+error.message);return;}
   allPosts=[];showToast(id?'Post updated.':'Post created.');clearEditor();switchTab('posts');
 }
+function insertDivider(){insertMd('\n---\n','');}
 function insertMd(before,after){const ta=document.getElementById('editor-content');const s=ta.selectionStart,e=ta.selectionEnd;const sel=ta.value.substring(s,e);ta.value=ta.value.substring(0,s)+before+sel+after+ta.value.substring(e);ta.focus();ta.selectionStart=s+before.length;ta.selectionEnd=e+before.length;}
 
 // ═══ PRAYER REQUEST ═══════════════════════════════════════
