@@ -29,7 +29,7 @@
 :root{--black:#0a0a0a;--dark:#111111;--mid:#1a1a1a;--surface:#222222;--border:rgba(255,255,255,0.08);--white:#f5f2ee;--off-white:#c8c4be;--muted:#7a7670;--accent:#b8a98a;--accent2:#8c7b5e;--font-display:'Cinzel',serif;--font-body:'EB Garamond',serif;--font-editorial:'Cormorant Garamond',serif;--max-w:1280px;--reading-w:min(1100px,96vw);--nav-h:64px}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
-body{background:var(--black);color:var(--white);font-family:var(--font-body);font-size:clamp(20px,2.5vw,24px);line-height:1.85;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+body{background:var(--black);color:var(--white);font-family:var(--font-body);font-size:clamp(22px,2.5vw,26px);line-height:1.9;overflow-x:hidden;-webkit-font-smoothing:antialiased}
 a{color:inherit;text-decoration:none}
 img{display:block;max-width:100%;color:transparent}
 button{cursor:pointer;border:none;background:none;font:inherit;color:inherit}
@@ -127,7 +127,7 @@ input,textarea{font:inherit;color:inherit;background:none;border:none;outline:no
 /* Use the stacked B+B logo image */
 .about-logo-img{position:relative;z-index:1;width:clamp(90px,14vw,160px);height:auto;filter:drop-shadow(0 0 40px rgba(0,0,0,.6))}
 .about-text{background:var(--mid);display:flex;align-items:center;padding:clamp(2.5rem,5vw,4rem)}
-.about-text p{font-family:var(--font-editorial);font-size:clamp(1.05rem,2vw,1.18rem);color:var(--off-white);line-height:1.9;margin-bottom:1.5rem}
+.about-text p{font-family:var(--font-editorial);font-size:clamp(1.15rem,2vw,1.28rem);color:var(--off-white);line-height:1.9;margin-bottom:1.5rem}
 .about-text p:last-child{margin-bottom:0}
 .about-text strong{font-family:var(--font-display);font-size:.9rem;letter-spacing:.1em;color:var(--white)}
 
@@ -197,13 +197,11 @@ input,textarea{font:inherit;color:inherit;background:none;border:none;outline:no
 .share-btn-platform{font-family:var(--font-display);font-size:.52rem;letter-spacing:.15em;text-transform:uppercase;padding:.4rem .9rem;border:1px solid var(--border);cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:.4rem;white-space:nowrap}
 .share-btn-platform:hover{border-color:var(--accent);color:var(--white)}
 .share-btn-platform.copy{color:var(--accent)}
-.share-btn-platform.facebook{color:#4267B2;border-color:rgba(66,103,178,.3)}
-.share-btn-platform.facebook:hover{border-color:#4267B2;background:rgba(66,103,178,.08)}
-.share-btn-platform.twitter{color:#1DA1F2;border-color:rgba(29,161,242,.3)}
-.share-btn-platform.twitter:hover{border-color:#1DA1F2;background:rgba(29,161,242,.08)}
-.post-reading-banner{font-family:var(--font-display);font-size:.6rem;letter-spacing:.25em;text-transform:uppercase;color:var(--accent2);margin-bottom:2rem;display:flex;align-items:center;gap:.8rem}
-.post-reading-banner::before{content:'';display:block;height:1px;width:40px;background:var(--accent2)}
-article.post-body{font-family:var(--font-editorial);font-size:clamp(1.25rem,2.5vw,1.45rem);color:var(--off-white);line-height:2.1}
+.share-btn-platform.facebook{color:var(--white);border-color:var(--border)}
+.share-btn-platform.facebook:hover{border-color:var(--accent);color:var(--white)}
+.share-btn-platform.twitter{color:var(--white);border-color:var(--border)}
+.share-btn-platform.twitter:hover{border-color:var(--accent);color:var(--white)}
+article.post-body{font-family:var(--font-editorial);font-size:clamp(1.35rem,2.5vw,1.55rem);color:var(--off-white);line-height:2.1}
 article.post-body h1,article.post-body h2,article.post-body h3{font-family:var(--font-display);color:var(--white);letter-spacing:.05em;margin:2.5rem 0 1rem;line-height:1.3}
 article.post-body h1{font-size:clamp(1.5rem,3vw,2rem)}
 article.post-body h2{font-size:clamp(1.25rem,2.5vw,1.6rem)}
@@ -500,7 +498,6 @@ article.post-body img{max-width:100%;margin:2rem auto;filter:grayscale(20%)}
           </button>
         </div>
       </div>
-      <div class="post-reading-banner" id="post-reading-banner"></div>
       <article class="post-body" id="post-body"></article>
     </div>
   </article>
@@ -892,10 +889,7 @@ async function loadPost(slug){
   // Tags not shown on post hero page
   document.getElementById('post-hero-title').textContent=post.title;
   document.getElementById('post-meta-date').textContent=new Date(post.created_at).toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
-  const rt = readingTime(post.content);
-  document.getElementById('post-meta-reading').textContent=rt;
-  const banner = document.getElementById('post-reading-banner');
-  if(banner) banner.textContent = rt;
+  document.getElementById('post-meta-reading').textContent=readingTime(post.content);
   document.getElementById('post-body').innerHTML=marked.parse(post.content||'');
   const tags=post.tags||[];
   const related=posts.filter(p=>p.slug!==slug&&(p.tags||[]).some(t=>tags.includes(t))).slice(0,3);
