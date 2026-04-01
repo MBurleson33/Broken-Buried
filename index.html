@@ -275,6 +275,10 @@ article.post-body img{max-width:100%;margin:2rem auto;filter:grayscale(20%)}
 .admin-post-status{font-family:var(--font-display);font-size:.52rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
 .admin-post-status.published{color:var(--accent)}
 .admin-post-actions{display:flex;gap:.5rem;flex-shrink:0}
+.drag-handle{cursor:grab;color:var(--muted);padding:.4rem .5rem;font-size:1rem;line-height:1;flex-shrink:0;touch-action:none}
+.drag-handle:hover{color:var(--white)}
+.admin-post-item.dragging{opacity:.4;border:1px dashed var(--accent2)}
+.admin-post-item.drag-over{border-color:var(--accent);background:rgba(184,169,138,.05)}
 .btn-icon{font-family:var(--font-display);font-size:.52rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:.4rem .7rem;border:1px solid var(--border);transition:all .2s}
 .btn-icon:hover{color:var(--white);border-color:var(--accent2)}
 .btn-icon.danger:hover{color:#ff6b6b;border-color:#ff6b6b}
@@ -811,7 +815,7 @@ function routeFromURL(){
 // ═══ POSTS CACHE ══════════════════════════════════════════
 async function ensurePostsCache(){
   if(allPosts.length)return;
-  const{data}=await sb.from('posts').select('id,title,slug,excerpt,content,cover_image_url,tags,created_at').eq('published',true).order('created_at',{ascending:false});
+  const{data}=await sb.from('posts').select('id,title,slug,excerpt,content,cover_image_url,tags,created_at,sort_order').eq('published',true).order('sort_order',{ascending:false});
   allPosts=data||[];
 }
 
@@ -963,11 +967,60 @@ function adminLogout(){sessionStorage.removeItem('bb_admin');navigate('home');}
 async function loadAdminPosts(){
   const list=document.getElementById('admin-posts-list');
   list.innerHTML='<div class="loading-spinner">Loading</div>';
-  const{data,error}=await sb.from('posts').select('*').order('created_at',{ascending:false});
+  const{data,error}=await sb.from('posts').select('*').order('sort_order',{ascending:false});
   if(error||!data){list.innerHTML='<p style="color:var(--muted);">Error loading posts.</p>';return;}
   if(!data.length){list.innerHTML='<p style="color:var(--muted);font-family:var(--font-editorial);font-style:italic;padding:1rem;">No posts yet.</p>';return;}
-  list.innerHTML=data.map(p=>`<div class="admin-post-item"><div class="admin-post-title">${esc(p.title)}</div><div class="admin-post-status ${p.published?'published':''}">${p.published?'Published':'Draft'}</div><div class="admin-post-actions"><button class="btn-icon" onclick='editPost(${JSON.stringify(p).replace(/'/g,"&#39;")})'>Edit</button><button class="btn-icon" onclick="togglePostPublished('${p.id}',${p.published})">${p.published?'Unpublish':'Publish'}</button><button class="btn-icon danger" onclick="deletePost('${p.id}','${esc(p.title)}')">Delete</button></div></div>`).join('');
+  list.innerHTML=data.map((p,i)=>`<div class="admin-post-item" draggable="true" data-id="${p.id}" data-index="${i}"><div class="drag-handle" title="Drag to reorder">⠿</div><div class="admin-post-title">${esc(p.title)}</div><div class="admin-post-status ${p.published?'published':''}">${p.published?'Published':'Draft'}</div><div class="admin-post-actions"><button class="btn-icon" onclick='editPost(${JSON.stringify(p).replace(/'/g,"&#39;")})'>Edit</button><button class="btn-icon" onclick="togglePostPublished('${p.id}',${p.published})">${p.published?'Unpublish':'Publish'}</button><button class="btn-icon danger" onclick="deletePost('${p.id}','${esc(p.title)}')">Delete</button></div></div>`).join('');
+  initDragReorder();
 }
+function initDragReorder(){
+  const items = document.querySelectorAll('.admin-post-item[draggable]');
+  let dragSrc = null;
+
+  items.forEach(item => {
+    item.addEventListener('dragstart', function(e){
+      dragSrc = this;
+      this.classList.add('dragging');
+      e.dataTransfer.effectAllowed = 'move';
+    });
+    item.addEventListener('dragend', function(){
+      this.classList.remove('dragging');
+      document.querySelectorAll('.admin-post-item').forEach(i => i.classList.remove('drag-over'));
+    });
+    item.addEventListener('dragover', function(e){
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+      document.querySelectorAll('.admin-post-item').forEach(i => i.classList.remove('drag-over'));
+      this.classList.add('drag-over');
+    });
+    item.addEventListener('drop', async function(e){
+      e.preventDefault();
+      if(dragSrc === this) return;
+      this.classList.remove('drag-over');
+      // Get all items in current order
+      const allItems = [...document.querySelectorAll('.admin-post-item[data-id]')];
+      const fromIdx = allItems.indexOf(dragSrc);
+      const toIdx = allItems.indexOf(this);
+      // Reorder array
+      allItems.splice(fromIdx, 1);
+      allItems.splice(toIdx, 0, dragSrc);
+      // Update sort_order in Supabase — highest number = first
+      const total = allItems.length;
+      const updates = allItems.map((el, i) => ({
+        id: el.dataset.id,
+        sort_order: total - i
+      }));
+      showToast('Saving order…');
+      await Promise.all(updates.map(u =>
+        sb.from('posts').update({sort_order: u.sort_order}).eq('id', u.id)
+      ));
+      allPosts = []; // bust cache
+      showToast('Order saved!');
+      loadAdminPosts();
+    });
+  });
+}
+
 async function togglePostPublished(id,current){await sb.from('posts').update({published:!current}).eq('id',id);allPosts=[];loadAdminPosts();}
 async function deletePost(id,title){if(!confirm(`Delete "${title}"?`))return;await sb.from('posts').delete().eq('id',id);await sb.from('comments').delete().eq('post_id',id);allPosts=[];showToast('Post deleted.');loadAdminPosts();}
 
