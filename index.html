@@ -484,8 +484,6 @@ article.post-body img{max-width:100%;margin:2rem auto;filter:grayscale(20%)}
     </header>
     <div class="post-content-wrap">
       <div class="post-meta">
-        <span class="post-meta-date" id="post-meta-date"></span>
-        <span class="post-meta-sep">·</span>
         <span class="post-meta-reading" id="post-meta-reading"></span>
         <div class="share-buttons">
           <button class="share-btn-platform facebook" onclick="shareToFacebook()">
@@ -869,7 +867,7 @@ function renderPostCard(post){
   return `<div class="post-card" onclick="navigate('post','${esc(post.slug)}')" tabindex="0" onkeydown="if(event.key==='Enter')navigate('post','${esc(post.slug)}')">
     <div class="post-card-image">${img}</div>
     <div class="post-card-body">${tags?`<div class="post-card-tags">${tags}</div>`:''}<div class="post-card-title">${esc(post.title)}</div><div class="post-card-excerpt">${esc(post.excerpt||'')}</div></div>
-    <div class="post-card-footer"><div class="post-card-meta"><span class="post-card-date">${date}</span><span class="post-card-reading">${rt}</span></div><span class="read-more">Read More →</span></div>
+    <div class="post-card-footer"><div class="post-card-meta"><span class="post-card-reading">${rt}</span></div><span class="read-more">Read More →</span></div>
   </div>`;
 }
 
