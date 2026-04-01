@@ -17,8 +17,8 @@
 <meta name="twitter:title" content="Broken + Buried" id="tw-title" />
 <meta name="twitter:description" content="We are all broken. We are not forgotten." id="tw-desc" />
 <meta name="twitter:image" content="https://brokenandburied.com/images/og-default.jpg" id="tw-image" />
-<link rel="icon" href="/images/B+B FavIcon.png" type="image/png" sizes="32x32" />
-<link rel="apple-touch-icon" href="/images/B+B FavIcon.png" />
+<link rel="icon" href="/images/B+B%20FavIcon.png" type="image/png" sizes="32x32" />
+<link rel="apple-touch-icon" href="/images/B+B%20FavIcon.png" />
 <script type="application/ld+json" id="json-ld">{"@context":"https://schema.org","@type":"WebSite","name":"Broken + Buried","url":"https://broken-buried.vercel.app"}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -890,7 +890,6 @@ async function loadPost(slug){
   if(post.cover_image_url){if(!img){img=document.createElement('img');img.className='post-hero-img';hero.insertBefore(img,hero.firstChild);}img.src=post.cover_image_url;img.alt=post.title;}else if(img)img.remove();
   // Tags not shown on post hero page
   document.getElementById('post-hero-title').textContent=post.title;
-  document.getElementById('post-meta-date').textContent=new Date(post.created_at).toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
   document.getElementById('post-meta-reading').textContent=readingTime(post.content);
   document.getElementById('post-body').innerHTML=marked.parse(post.content||'');
   const tags=post.tags||[];
