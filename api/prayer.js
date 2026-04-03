@@ -4,15 +4,25 @@ module.exports = async function handler(req, res) {
   }
 
   const { name, request } = req.body;
+
   if (!request) {
     return res.status(400).json({ error: 'Missing prayer request' });
+  }
+
+  if (!process.env.RESEND_API_KEY) {
+    console.error('Missing RESEND_API_KEY in Vercel environment variables');
+    return res.status(200).json({
+      success: true,
+      emailFailed: true,
+      details: 'Missing RESEND_API_KEY',
+    });
   }
 
   try {
     const response = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${process.env.RESEND_API_KEY}`,
+        Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
@@ -29,21 +39,37 @@ module.exports = async function handler(req, res) {
             <p style="margin-bottom:2rem;font-size:1.1rem;">${name || 'Anonymous'}</p>
             <p style="margin-bottom:.5rem;color:#7a7670;font-size:.8rem;text-transform:uppercase;letter-spacing:.1em;">Prayer Request</p>
             <p style="font-size:1.1rem;line-height:1.8;color:#c8c4be;padding:1.5rem;background:#1a1a1a;border-left:3px solid #8c7b5e;">${request.replace(/\n/g, '<br>')}</p>
-            <p style="margin-top:2rem;font-style:italic;color:#7a7670;font-size:.9rem;">"Do not be anxious about anything, but in every situation, by prayer and petition, with thanksgiving, present your requests to God." — Philippians 4:6</p>
+            <p style="margin-top:2rem;font-style:italic;color:#7a7670;font-size:.9rem;">"Do not be anxious about anything, but in every situation, by prayer and petition, with thanksgiving, present your requests to God." - Philippians 4:6</p>
           </div>
         `,
       }),
     });
 
+    const data = await response.text();
+
     if (!response.ok) {
-      const err = await response.text();
-      console.error('Resend error:', err);
-      // Don't fail the request — prayer was saved to Supabase
+      console.error('Resend error:', data);
+
+      return res.status(200).json({
+        success: true,
+        emailFailed: true,
+        details: data,
+      });
     }
 
-    return res.status(200).json({ success: true });
+    console.log('Resend success:', data);
+
+    return res.status(200).json({
+      success: true,
+      emailFailed: false,
+    });
   } catch (err) {
     console.error('Prayer email error:', err);
-    return res.status(200).json({ success: true }); // Still succeed — Supabase has the data
+
+    return res.status(200).json({
+      success: true,
+      emailFailed: true,
+      details: err.message,
+    });
   }
 };
