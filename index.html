@@ -138,6 +138,7 @@ input,textarea{font:inherit;color:inherit;background:none;border:none;outline:no
 
 /* POSTS GRID */
 #recent-posts-section{background:var(--surface);padding-bottom:clamp(2rem,4vw,4rem)}
+#home-posts-grid{grid-template-rows:repeat(2,auto);overflow:hidden}
 .posts-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(220px,100%),1fr));gap:clamp(1rem,2vw,1.5rem);max-width:2000px;margin:0 auto;padding:0 clamp(2rem,4vw,4rem)}
 .posts-grid.blog-grid{grid-template-columns:repeat(auto-fill,minmax(min(300px,100%),1fr));padding-bottom:clamp(2rem,4vw,4rem)}
 .post-card{background:var(--dark);border:1px solid var(--border);cursor:pointer;transition:transform .35s ease,box-shadow .35s ease;overflow:hidden;display:flex;flex-direction:column}
@@ -843,7 +844,7 @@ async function ensurePostsCache(){
 async function loadHomePosts(){
   await ensurePostsCache();
   const grid=document.getElementById('home-posts-grid');
-  const posts=allPosts.slice(0,10);
+  const posts=allPosts.slice(0,20);
   grid.innerHTML=posts.length?posts.map(renderPostCard).join(''):`<p style="padding:2rem;color:var(--muted);font-family:var(--font-editorial);font-style:italic;grid-column:1/-1;">No posts yet.</p>`;
 }
 
