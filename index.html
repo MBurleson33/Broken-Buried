@@ -793,8 +793,8 @@ window.addEventListener('popstate', function(e){
 // Read current URL and route to correct page on load
 function routeFromURL(){
   const path = window.location.pathname;
+  // Handle redirect from api/post.js — real visitors hitting /post/:slug
   const params = new URLSearchParams(window.location.search);
-  // Handle redirect from api/post.js for real visitors hitting /post/:slug
   const postSlug = params.get('_post');
   if(postSlug){
     history.replaceState({target:'post',slug:postSlug}, '', `/post/${postSlug}`);
