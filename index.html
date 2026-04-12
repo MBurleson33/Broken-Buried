@@ -6,20 +6,20 @@
 <title>Broken + Buried</title>
 <meta name="description" content="Broken + Buried — we bury ourselves daily so that we may start new every day. A blog about faith, brokenness, and renewal." />
 <meta name="robots" content="index, follow" />
-<link rel="canonical" href="https://brokenandburied.com/" id="canonical" />
+<link rel="canonical" href="https://broken-buried.vercel.app/" id="canonical" />
 <meta property="og:site_name" content="Broken + Buried" />
 <meta property="og:type" content="website" id="og-type" />
 <meta property="og:title" content="Broken + Buried" id="og-title" />
 <meta property="og:description" content="We are all broken. We are not forgotten." id="og-desc" />
 <meta property="og:image" content="https://brokenandburied.com/images/og-default.jpg" id="og-image" />
-<meta property="og:url" content="https://brokenandburied.com/" id="og-url" />
+<meta property="og:url" content="https://broken-buried.vercel.app/" id="og-url" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="Broken + Buried" id="tw-title" />
 <meta name="twitter:description" content="We are all broken. We are not forgotten." id="tw-desc" />
 <meta name="twitter:image" content="https://brokenandburied.com/images/og-default.jpg" id="tw-image" />
-<link rel="icon" href="/images/B+B%20FavIcon.png" type="image/png" sizes="32x32 64x64 128x128" />
+<link rel="icon" href="/images/B+B%20FavIcon.png" type="image/png" sizes="32x32" />
 <link rel="apple-touch-icon" href="/images/B+B%20FavIcon.png" />
-<script type="application/ld+json" id="json-ld">{"@context":"https://schema.org","@type":"WebSite","name":"Broken + Buried","url":"https://brokenandburied.com"}</script>
+<script type="application/ld+json" id="json-ld">{"@context":"https://schema.org","@type":"WebSite","name":"Broken + Buried","url":"https://broken-buried.vercel.app"}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet" />
@@ -138,54 +138,7 @@ input,textarea{font:inherit;color:inherit;background:none;border:none;outline:no
 
 /* POSTS GRID */
 #recent-posts-section{background:var(--surface);padding-bottom:clamp(2rem,4vw,4rem)}
-.posts-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(280px,100%),1fr));gap:clamp(1rem,2vw,1.5rem);max-width:2000px;margin:0 auto;padding:0 clamp(2rem,4vw,4rem)}
-
-/* FEATURED LAYOUT — hero left (img+text side by side) + sidebar stack right */
-.posts-featured{display:grid;grid-template-columns:1fr 1fr;gap:clamp(1rem,2vw,1.5rem);max-width:2000px;margin:0 auto;padding:0 clamp(2rem,4vw,4rem) clamp(1rem,2vw,1.5rem);align-items:stretch}
-
-/* Hero card — image left, text right */
-.post-card-hero{background:var(--dark);border:1px solid var(--border);cursor:pointer;transition:transform .35s ease,box-shadow .35s ease;overflow:hidden;display:flex;flex-direction:row}
-.post-card-hero:hover{transform:translateY(-3px);box-shadow:0 20px 60px rgba(0,0,0,.5)}
-.post-card-hero .post-card-image{width:45%;flex-shrink:0;overflow:hidden}
-.post-card-hero .post-card-image img{width:100%;height:100%;object-fit:cover;filter:grayscale(100%) contrast(1.1);transition:filter .5s ease,transform .5s ease}
-.post-card-hero:hover .post-card-image img{filter:grayscale(0%) contrast(1);transform:scale(1.03)}
-.post-card-hero-text{display:flex;flex-direction:column;padding:clamp(1.2rem,2.5vw,2rem);flex:1;min-width:0}
-.post-card-hero .post-card-title{font-family:var(--font-display);font-size:clamp(1.1rem,2vw,1.6rem);font-weight:600;letter-spacing:.03em;color:var(--white);line-height:1.3;margin-bottom:.8rem}
-.post-card-hero .post-card-excerpt{font-family:var(--font-editorial);font-size:clamp(.95rem,1.4vw,1.1rem);color:var(--muted);line-height:1.75;display:-webkit-box;-webkit-line-clamp:6;-webkit-box-orient:vertical;overflow:hidden;flex:1}
-.post-card-hero-footer{display:flex;align-items:center;justify-content:space-between;margin-top:1.2rem;padding-top:1rem;border-top:1px solid var(--border)}
-
-/* Sidebar stack — 3 horizontal cards */
-.posts-sidebar{display:flex;flex-direction:column;gap:clamp(.8rem,1.5vw,1rem)}
-.post-card-side{background:var(--dark);border:1px solid var(--border);cursor:pointer;transition:transform .25s ease,box-shadow .25s ease;overflow:hidden;display:flex;flex-direction:row;flex:1}
-.post-card-side:hover{transform:translateY(-2px);box-shadow:0 12px 40px rgba(0,0,0,.5)}
-.post-card-side .post-card-image{width:140px;flex-shrink:0;overflow:hidden}
-.post-card-side .post-card-image img{width:100%;height:100%;object-fit:cover;filter:grayscale(100%) contrast(1.1);transition:filter .4s ease}
-.post-card-side:hover .post-card-image img{filter:grayscale(0%) contrast(1)}
-.post-card-side-body{padding:.9rem 1.1rem;display:flex;flex-direction:column;justify-content:center;flex:1;min-width:0}
-.post-card-side-tags{display:flex;flex-wrap:wrap;gap:.3rem;margin-bottom:.4rem}
-.post-card-side-title{font-family:var(--font-display);font-size:clamp(.82rem,1.1vw,.95rem);font-weight:600;letter-spacing:.03em;color:var(--white);line-height:1.4;margin-bottom:.4rem;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
-.post-card-side-excerpt{font-family:var(--font-editorial);font-size:clamp(.85rem,1.1vw,.95rem);color:var(--muted);line-height:1.6;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:.4rem}
-.post-card-side-reading{font-family:var(--font-display);font-size:.45rem;letter-spacing:.15em;text-transform:uppercase;color:var(--accent2)}
-
-/* Grid below — also horizontal cards matching sidebar style */
-.posts-grid.home-grid{grid-template-columns:repeat(auto-fill,minmax(min(420px,100%),1fr));display:none}
-.posts-grid.home-grid .post-card{flex-direction:row}
-.posts-grid.home-grid .post-card-image{width:140px;flex-shrink:0;aspect-ratio:auto}
-.posts-grid.home-grid .post-card-image img{height:100%}
-.posts-grid.home-grid .post-card-body{padding:.9rem 1.1rem}
-.posts-grid.home-grid .post-card-footer{border-top:none;padding:.5rem 1.1rem .9rem;margin-top:0}
-
-@media(max-width:900px){
-  .posts-featured{grid-template-columns:1fr}
-  .posts-sidebar{display:none}
-  .post-card-hero{flex-direction:column}
-  .post-card-hero .post-card-image{width:100%;height:220px}
-  .posts-grid.home-grid{display:grid;grid-template-columns:1fr}
-}
-@media(max-width:768px){
-  .posts-grid.home-grid .post-card{flex-direction:column}
-  .posts-grid.home-grid .post-card-image{width:100%;height:180px}
-}
+.posts-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(220px,100%),1fr));gap:clamp(1rem,2vw,1.5rem);max-width:2000px;margin:0 auto;padding:0 clamp(2rem,4vw,4rem)}
 .posts-grid.blog-grid{grid-template-columns:repeat(auto-fill,minmax(min(300px,100%),1fr));padding-bottom:clamp(2rem,4vw,4rem)}
 .post-card{background:var(--dark);border:1px solid var(--border);cursor:pointer;transition:transform .35s ease,box-shadow .35s ease;overflow:hidden;display:flex;flex-direction:column}
 .post-card:hover{transform:translateY(-4px);box-shadow:0 20px 60px rgba(0,0,0,.5)}
@@ -366,22 +319,14 @@ article.post-body img{max-width:100%;margin:2rem auto;filter:grayscale(20%)}
 .footer-links a:hover{color:var(--white)}
 .footer-copy{font-family:var(--font-display);font-size:.52rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted)}
 
-/* HONEYPOT - hide from humans */
-.prayer-honeypot{position:absolute;left:-9999px;opacity:0;pointer-events:none;tab-index:-1}
-
 /* PRAYER PAGE */
 #prayer-page{padding-top:calc(var(--nav-h) + 4rem);min-height:100vh;max-width:680px;margin:0 auto;padding-left:clamp(1.5rem,4vw,3rem);padding-right:clamp(1.5rem,4vw,3rem);padding-bottom:6rem}
 .prayer-title{font-family:var(--font-display);font-size:clamp(1.8rem,4vw,3rem);font-weight:600;letter-spacing:.05em;color:var(--white);margin-bottom:.8rem}
 .prayer-subtitle{font-family:var(--font-editorial);font-style:italic;color:var(--muted);font-size:clamp(1rem,2vw,1.15rem);margin-bottom:.8rem;line-height:1.7}
 .prayer-verse{font-family:var(--font-editorial);font-style:italic;color:var(--accent2);font-size:clamp(.9rem,1.8vw,1rem);margin-bottom:3rem;padding:1.2rem 1.5rem;border-left:2px solid var(--accent2);background:rgba(255,255,255,.02)}
 .prayer-form{display:flex;flex-direction:column;gap:1.5rem}
-.prayer-captcha{display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
-.prayer-captcha-question{font-family:var(--font-display);font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted)}
-.prayer-captcha-input{background:var(--mid);border:1px solid var(--border);padding:.6rem .8rem;color:var(--white);font-family:var(--font-display);font-size:.8rem;width:80px;text-align:center;transition:border-color .2s}
-.prayer-captcha-input:focus{border-color:var(--accent2)}
-.prayer-captcha-error{color:#ff6b6b;font-family:var(--font-display);font-size:.55rem;letter-spacing:.1em}
 .prayer-success{display:none;text-align:center;padding:3rem 2rem;border:1px solid var(--accent2);background:rgba(140,123,94,.05)}
-.prayer-success-icon{margin-bottom:1.5rem;display:flex;justify-content:center}
+.prayer-success-icon{font-size:2.5rem;margin-bottom:1rem}
 .prayer-success h3{font-family:var(--font-display);font-size:1rem;letter-spacing:.1em;color:var(--white);margin-bottom:.8rem}
 .prayer-success p{font-family:var(--font-editorial);font-style:italic;color:var(--muted);font-size:1.05rem}
 
@@ -505,8 +450,7 @@ article.post-body img{max-width:100%;margin:2rem auto;filter:grayscale(20%)}
     <div class="section-header">
       <span class="section-label">Recent Posts</span>
     </div>
-    <div id="home-posts-featured"></div>
-    <div class="posts-grid" id="home-posts-grid"></div>
+    <div class="posts-grid" id="home-posts-grid"><div class="loading-spinner">Loading</div></div>
     <!-- View All only at bottom -->
     <div class="view-all-wrap"><button class="btn-outline" onclick="navigate('blog')">View All Posts →</button></div>
   </section>
@@ -587,7 +531,7 @@ article.post-body img{max-width:100%;margin:2rem auto;filter:grayscale(20%)}
   <div class="prayer-verse">"Do not be anxious about anything, but in every situation, by prayer and petition, with thanksgiving, present your requests to God." — Philippians 4:6</div>
 
   <div class="prayer-success" id="prayer-success">
-    <div class="prayer-success-icon"><img src="/images/BB Logo cross.png" alt="Broken + Buried" style="width:120px;height:120px;object-fit:contain;margin:0 auto;" /></div>
+    <div class="prayer-success-icon">✝</div>
     <h3>Your Request Has Been Received</h3>
     <p>We are honored to stand with you in prayer. May God meet you right where you are.</p>
   </div>
@@ -610,19 +554,6 @@ article.post-body img{max-width:100%;margin:2rem auto;filter:grayscale(20%)}
     <div class="form-group" style="display:flex;align-items:center;gap:.8rem;">
       <input type="checkbox" id="prayer-anonymous" style="width:16px;height:16px;accent-color:var(--accent2);flex-shrink:0;" />
       <label for="prayer-anonymous" style="font-family:var(--font-display);font-size:.58rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);cursor:pointer;margin-bottom:0;">Keep my name anonymous</label>
-    </div>
-    <!-- Honeypot - bots fill this, humans don't see it -->
-    <div class="prayer-honeypot" aria-hidden="true">
-      <label for="prayer-website">Website</label>
-      <input type="text" id="prayer-website" name="website" tabindex="-1" autocomplete="off" />
-    </div>
-    <!-- Math captcha -->
-    <div class="form-group">
-      <div class="prayer-captcha">
-        <span class="prayer-captcha-question" id="captcha-question"></span>
-        <input type="number" id="captcha-answer" class="prayer-captcha-input" placeholder="?" autocomplete="off" />
-        <span class="prayer-captcha-error hidden" id="captcha-error">Incorrect answer</span>
-      </div>
     </div>
     <div>
       <button class="btn-submit" onclick="submitPrayer(event)">Submit Prayer Request</button>
@@ -833,7 +764,6 @@ function navigate(target, slug, pushState=true){
     showPage('post-page');
     loadPost(slug);
   } else if(target==='prayer'){
-    setTimeout(initCaptcha, 100);
     if(pushState) history.pushState({target:'prayer'}, '', '/prayer');
     showPage('prayer-page');
     updateSEO({title:'Request Prayer — Broken + Buried',description:'Submit a prayer request to Broken + Buried.',url:`${SITE_URL}/prayer`,image:DEFAULT_OG_IMAGE});
@@ -863,6 +793,14 @@ window.addEventListener('popstate', function(e){
 // Read current URL and route to correct page on load
 function routeFromURL(){
   const path = window.location.pathname;
+  const params = new URLSearchParams(window.location.search);
+  // Handle redirect from api/post.js for real visitors hitting /post/:slug
+  const postSlug = params.get('_post');
+  if(postSlug){
+    history.replaceState({target:'post',slug:postSlug}, '', `/post/${postSlug}`);
+    navigate('post', postSlug, false);
+    return;
+  }
   if(path === '/' || path === ''){
     navigate('home', null, false);
   } else if(path === '/blog' || path === '/blog/'){
@@ -890,61 +828,9 @@ async function ensurePostsCache(){
 // ═══ HOME POSTS ═══════════════════════════════════════════
 async function loadHomePosts(){
   await ensurePostsCache();
-  const featured = document.getElementById('home-posts-featured');
-  const grid = document.getElementById('home-posts-grid');
-
-  if(!allPosts.length){
-    featured.innerHTML = '';
-    grid.innerHTML = `<p style="padding:2rem;color:var(--muted);font-family:var(--font-editorial);font-style:italic;grid-column:1/-1;">No posts yet.</p>`;
-    return;
-  }
-
-  // First post — hero featured card
-  const hero = allPosts[0];
-  const heroTags = shuffleTags(hero.tags||[]).slice(0,3).map(t=>`<span class="tag-pill">${esc(t)}</span>`).join('');
-  const heroImg = hero.cover_image_url
-    ? `<img src="${esc(hero.cover_image_url)}" alt="${esc(hero.title)}" loading="lazy" />`
-    : `<div class="post-placeholder">✝</div>`;
-
-  // Next 3 posts — sidebar stack
-  const sidebarPosts = allPosts.slice(1,4);
-  const sidebarHTML = sidebarPosts.map(p => {
-    const tags = shuffleTags(p.tags||[]).slice(0,3).map(t=>`<span class="tag-pill">${esc(t)}</span>`).join('');
-    const img = p.cover_image_url
-      ? `<img src="${esc(p.cover_image_url)}" alt="${esc(p.title)}" loading="lazy" />`
-      : `<div class="post-placeholder" style="height:100%;min-height:90px;">✝</div>`;
-    return `<div class="post-card-side" onclick="navigate('post','${esc(p.slug)}')" tabindex="0">
-      <div class="post-card-image">${img}</div>
-      <div class="post-card-side-body">
-        ${tags ? `<div class="post-card-side-tags">${tags}</div>` : ''}
-        <div class="post-card-side-title">${esc(p.title)}</div>
-        <div class="post-card-side-excerpt">${esc(p.excerpt||'')}</div>
-        <div class="post-card-side-reading">${readingTime(p.content)}</div>
-      </div>
-    </div>`;
-  }).join('');
-
-  featured.innerHTML = `<div class="posts-featured">
-    <div class="post-card-hero" onclick="navigate('post','${esc(hero.slug)}')" tabindex="0">
-      <div class="post-card-image">${heroImg}</div>
-      <div class="post-card-hero-text">
-        ${heroTags ? `<div class="post-card-tags" style="margin-bottom:.7rem">${heroTags}</div>` : ''}
-        <div class="post-card-title">${esc(hero.title)}</div>
-        <div class="post-card-excerpt">${esc(hero.excerpt||'')}</div>
-        <div class="post-card-hero-footer">
-          <span class="post-card-reading">${readingTime(hero.content)}</span>
-          <span class="read-more">Read More →</span>
-        </div>
-      </div>
-    </div>
-    <div class="posts-sidebar">${sidebarHTML}</div>
-  </div>`;
-
-  // Remaining posts — regular grid (posts 5-13)
-  const remaining = allPosts.slice(4,13);
-  // Add home-grid class for horizontal card style
-  document.getElementById('home-posts-grid').classList.add('home-grid');
-  grid.innerHTML = remaining.length ? remaining.map(renderPostCard).join('') : '';
+  const grid=document.getElementById('home-posts-grid');
+  const posts=allPosts.slice(0,10);
+  grid.innerHTML=posts.length?posts.map(renderPostCard).join(''):`<p style="padding:2rem;color:var(--muted);font-family:var(--font-editorial);font-style:italic;grid-column:1/-1;">No posts yet.</p>`;
 }
 
 // ═══ BLOG POSTS ═══════════════════════════════════════════
@@ -984,7 +870,7 @@ function filterBlogPosts(){
 function renderPostCard(post){
   const date=new Date(post.created_at).toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
   const rt=readingTime(post.content);
-  const tags=shuffleTags(post.tags||[]).slice(0,3).map(t=>`<span class="tag-pill">${esc(t)}</span>`).join('');
+  const tags=(post.tags||[]).slice(0,2).map(t=>`<span class="tag-pill">${esc(t)}</span>`).join('');
   const img=post.cover_image_url?`<img src="${esc(post.cover_image_url)}" alt="${esc(post.title)}" loading="lazy" />`:`<div class="post-placeholder">✝</div>`;
   return `<div class="post-card" onclick="navigate('post','${esc(post.slug)}')" tabindex="0" onkeydown="if(event.key==='Enter')navigate('post','${esc(post.slug)}')">
     <div class="post-card-image">${img}</div>
@@ -1261,18 +1147,6 @@ function insertDivider(){insertMd('\n---\n','');}
 function insertMd(before,after){const ta=document.getElementById('editor-content');const s=ta.selectionStart,e=ta.selectionEnd;const sel=ta.value.substring(s,e);ta.value=ta.value.substring(0,s)+before+sel+after+ta.value.substring(e);ta.focus();ta.selectionStart=s+before.length;ta.selectionEnd=e+before.length;}
 
 // ═══ PRAYER REQUEST ═══════════════════════════════════════
-// Math captcha state
-let captchaAnswer = 0;
-function initCaptcha(){
-  const a = Math.floor(Math.random()*10)+1;
-  const b = Math.floor(Math.random()*10)+1;
-  captchaAnswer = a + b;
-  const q = document.getElementById('captcha-question');
-  if(q) q.textContent = `What is ${a} + ${b}?`;
-  const inp = document.getElementById('captcha-answer');
-  if(inp) inp.value = '';
-}
-
 async function submitPrayer(e){
   e.preventDefault();
   const name = document.getElementById('prayer-name').value.trim();
@@ -1280,22 +1154,6 @@ async function submitPrayer(e){
   const request = document.getElementById('prayer-request').value.trim();
   const anonymous = document.getElementById('prayer-anonymous').checked;
   if(!request){showToast('Please share your prayer request.');return;}
-
-  // Honeypot check — bots fill the hidden field
-  const honeypot = document.getElementById('prayer-website').value;
-  if(honeypot){return;} // Silent fail for bots
-
-  // Math captcha check
-  const userAnswer = parseInt(document.getElementById('captcha-answer').value);
-  const errEl = document.getElementById('captcha-error');
-  if(isNaN(userAnswer) || userAnswer !== captchaAnswer){
-    errEl.classList.remove('hidden');
-    setTimeout(()=>errEl.classList.add('hidden'), 3000);
-    initCaptcha();
-    return;
-  }
-  errEl.classList.add('hidden');
-
   const btn = e.target;
   btn.textContent = 'Submitting…';
   btn.disabled = true;
@@ -1326,22 +1184,14 @@ async function submitPrayer(e){
 }
 
 // ═══ UTILS ════════════════════════════════════════════════
-function shuffleTags(tags){
-  const arr = [...tags];
-  for(let i=arr.length-1;i>0;i--){
-    const j=Math.floor(Math.random()*(i+1));
-    [arr[i],arr[j]]=[arr[j],arr[i]];
-  }
-  return arr;
-}
 function esc(str){if(!str)return '';return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
 function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000);}
 
 // ═══ LOGO LOADER ══════════════════════════════════════════
 (function(){
-  const wide=document.querySelector('.nav-logo-wide');
-  const icon=document.querySelector('.nav-logo-icon');
-  const text=document.querySelector('.nav-logo-text');
+  const wide=document.getElementById('nav-logo-wide-img');
+  const icon=document.getElementById('nav-logo-icon-img');
+  const text=document.getElementById('nav-logo-text');
   if(!wide||!text)return;
   wide.onload=function(){text.style.display='none';};
   wide.onerror=function(){wide.style.display='none';};
