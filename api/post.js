@@ -1,35 +1,25 @@
-const fs = require('fs');
-const path = require('path');
-
 const SITE_URL = 'https://brokenandburied.com';
 const DEFAULT_OG = `${SITE_URL}/images/og-default.jpg`;
-
 const SOCIAL_CRAWLERS = [
   'facebookexternalhit','twitterbot','linkedinbot','whatsapp',
   'telegrambot','slackbot','discordbot','googlebot','bingbot',
   'applebot','pinterest','iframely','embedly','vkshare',
 ];
-
 module.exports = async function handler(req, res) {
   const slug = (req.query.slug || '').trim();
   const userAgent = (req.headers['user-agent'] || '').toLowerCase();
   const isCrawler = SOCIAL_CRAWLERS.some(bot => userAgent.includes(bot));
-
   if (!isCrawler) {
-    // Real visitor — serve the SPA index.html
-    const indexPath = path.join(process.cwd(), 'index.html');
-    const html = fs.readFileSync(indexPath, 'utf8');
-    res.setHeader('Content-Type', 'text/html');
+    // Real visitor — redirect to SPA with slug as query param so it loads correctly
+    res.setHeader('Location', `/?_post=${encodeURIComponent(slug)}`);
     res.setHeader('Cache-Control', 'no-store');
-    return res.status(200).send(html);
+    return res.status(302).end();
   }
-
   // Social crawler — fetch post data and return rich OG tags
   let title = 'Broken + Buried';
   let description = 'Broken + Buried — we bury ourselves daily so that we may start new every day.';
   let image = DEFAULT_OG;
   const url = `${SITE_URL}/post/${slug}`;
-
   if (slug) {
     try {
       const response = await fetch(
@@ -50,7 +40,6 @@ module.exports = async function handler(req, res) {
       }
     } catch(e) {}
   }
-
   const html = `<!DOCTYPE html>
 <html>
 <head>
@@ -70,7 +59,6 @@ module.exports = async function handler(req, res) {
 </head>
 <body></body>
 </html>`;
-
   res.setHeader('Content-Type', 'text/html');
   res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate');
   return res.status(200).send(html);
