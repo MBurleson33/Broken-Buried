@@ -9,17 +9,13 @@ module.exports = async function handler(req, res) {
   const slug = (req.query.slug || '').trim();
   const userAgent = (req.headers['user-agent'] || '').toLowerCase();
   const isCrawler = SOCIAL_CRAWLERS.some(bot => userAgent.includes(bot));
-  if (!isCrawler) {
-    // Real visitor — redirect to SPA with slug as query param so it loads correctly
-    res.setHeader('Location', `/?_post=${encodeURIComponent(slug)}`);
-    res.setHeader('Cache-Control', 'no-store');
-    return res.status(302).end();
-  }
-  // Social crawler — fetch post data and return rich OG tags
+
+  // Fetch post data for both crawlers and real visitors
   let title = 'Broken + Buried';
   let description = 'Broken + Buried — we bury ourselves daily so that we may start new every day.';
   let image = DEFAULT_OG;
   const url = `${SITE_URL}/post/${slug}`;
+
   if (slug) {
     try {
       const response = await fetch(
@@ -40,7 +36,10 @@ module.exports = async function handler(req, res) {
       }
     } catch(e) {}
   }
-  const html = `<!DOCTYPE html>
+
+  // For crawlers — return OG tags only, no redirect
+  if (isCrawler) {
+    const html = `<!DOCTYPE html>
 <html>
 <head>
   <meta charset="UTF-8" />
@@ -59,7 +58,41 @@ module.exports = async function handler(req, res) {
 </head>
 <body></body>
 </html>`;
+    res.setHeader('Content-Type', 'text/html');
+    res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate');
+    return res.status(200).send(html);
+  }
+
+  // For real visitors — full page with OG tags + JS that loads the SPA
+  const html = `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>${title}</title>
+  <meta name="description" content="${description}" />
+  <meta property="og:title" content="${title}" />
+  <meta property="og:description" content="${description}" />
+  <meta property="og:image" content="${image}" />
+  <meta property="og:url" content="${url}" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Broken + Buried" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="${title}" />
+  <meta name="twitter:description" content="${description}" />
+  <meta name="twitter:image" content="${image}" />
+  <style>body{margin:0;background:#0a0a0a;display:flex;align-items:center;justify-content:center;min-height:100vh;font-family:Georgia,serif;color:#7a7670;font-size:.8rem;letter-spacing:.1em}</style>
+</head>
+<body>
+  <p>Loading…</p>
+  <script>
+    // Replace current history entry so back button works correctly
+    history.replaceState({target:'post',slug:'${slug}'}, '', '/post/${slug}');
+    window.location.replace('/?_post=${encodeURIComponent(slug)}');
+  </script>
+</body>
+</html>`;
   res.setHeader('Content-Type', 'text/html');
-  res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate');
+  res.setHeader('Cache-Control', 'no-store');
   return res.status(200).send(html);
 };
