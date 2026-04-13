@@ -372,8 +372,14 @@ article.post-body img{max-width:100%;margin:2rem auto;filter:grayscale(20%)}
 .prayer-subtitle{font-family:var(--font-editorial);font-style:italic;color:var(--muted);font-size:clamp(1rem,2vw,1.15rem);margin-bottom:.8rem;line-height:1.7}
 .prayer-verse{font-family:var(--font-editorial);font-style:italic;color:var(--accent2);font-size:clamp(.9rem,1.8vw,1rem);margin-bottom:3rem;padding:1.2rem 1.5rem;border-left:2px solid var(--accent2);background:rgba(255,255,255,.02)}
 .prayer-form{display:flex;flex-direction:column;gap:1.5rem}
+.prayer-honeypot{position:absolute;left:-9999px;opacity:0;pointer-events:none;tab-index:-1}
+.prayer-captcha{display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
+.prayer-captcha-question{font-family:var(--font-display);font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted)}
+.prayer-captcha-input{background:var(--mid);border:1px solid var(--border);padding:.6rem .8rem;color:var(--white);font-family:var(--font-display);font-size:.8rem;width:80px;text-align:center;transition:border-color .2s}
+.prayer-captcha-input:focus{border-color:var(--accent2)}
+.prayer-captcha-error{color:#ff6b6b;font-family:var(--font-display);font-size:.55rem;letter-spacing:.1em}
 .prayer-success{display:none;text-align:center;padding:3rem 2rem;border:1px solid var(--accent2);background:rgba(140,123,94,.05)}
-.prayer-success-icon{font-size:2.5rem;margin-bottom:1rem}
+.prayer-success-icon{margin-bottom:1.5rem;display:flex;justify-content:center}
 .prayer-success h3{font-family:var(--font-display);font-size:1rem;letter-spacing:.1em;color:var(--white);margin-bottom:.8rem}
 .prayer-success p{font-family:var(--font-editorial);font-style:italic;color:var(--muted);font-size:1.05rem}
 
@@ -579,7 +585,7 @@ article.post-body img{max-width:100%;margin:2rem auto;filter:grayscale(20%)}
   <div class="prayer-verse">"Do not be anxious about anything, but in every situation, by prayer and petition, with thanksgiving, present your requests to God." — Philippians 4:6</div>
 
   <div class="prayer-success" id="prayer-success">
-    <div class="prayer-success-icon">✝</div>
+    <div class="prayer-success-icon"><img src="/images/BB Logo cross.png" alt="Broken + Buried" style="width:120px;height:120px;object-fit:contain;margin:0 auto;" /></div>
     <h3>Your Request Has Been Received</h3>
     <p>We are honored to stand with you in prayer. May God meet you right where you are.</p>
   </div>
@@ -602,6 +608,19 @@ article.post-body img{max-width:100%;margin:2rem auto;filter:grayscale(20%)}
     <div class="form-group" style="display:flex;align-items:center;gap:.8rem;">
       <input type="checkbox" id="prayer-anonymous" style="width:16px;height:16px;accent-color:var(--accent2);flex-shrink:0;" />
       <label for="prayer-anonymous" style="font-family:var(--font-display);font-size:.58rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);cursor:pointer;margin-bottom:0;">Keep my name anonymous</label>
+    </div>
+    <!-- Honeypot - bots fill this, humans don't see it -->
+    <div class="prayer-honeypot" aria-hidden="true">
+      <label for="prayer-website">Website</label>
+      <input type="text" id="prayer-website" name="website" tabindex="-1" autocomplete="off" />
+    </div>
+    <!-- Math captcha -->
+    <div class="form-group">
+      <div class="prayer-captcha">
+        <span class="prayer-captcha-question" id="captcha-question"></span>
+        <input type="number" id="captcha-answer" class="prayer-captcha-input" placeholder="?" autocomplete="off" />
+        <span class="prayer-captcha-error hidden" id="captcha-error">Incorrect answer</span>
+      </div>
     </div>
     <div>
       <button class="btn-submit" onclick="submitPrayer(event)">Submit Prayer Request</button>
@@ -812,6 +831,7 @@ function navigate(target, slug, pushState=true){
     showPage('post-page');
     loadPost(slug);
   } else if(target==='prayer'){
+    setTimeout(initCaptcha, 100);
     if(pushState) history.pushState({target:'prayer'}, '', '/prayer');
     showPage('prayer-page');
     updateSEO({title:'Request Prayer — Broken + Buried',description:'Submit a prayer request to Broken + Buried.',url:`${SITE_URL}/prayer`,image:DEFAULT_OG_IMAGE});
@@ -1246,6 +1266,16 @@ function insertDivider(){insertMd('\n---\n','');}
 function insertMd(before,after){const ta=document.getElementById('editor-content');const s=ta.selectionStart,e=ta.selectionEnd;const sel=ta.value.substring(s,e);ta.value=ta.value.substring(0,s)+before+sel+after+ta.value.substring(e);ta.focus();ta.selectionStart=s+before.length;ta.selectionEnd=e+before.length;}
 
 // ═══ PRAYER REQUEST ═══════════════════════════════════════
+let captchaAnswer = 0;
+function initCaptcha(){
+  const a = Math.floor(Math.random()*10)+1;
+  const b = Math.floor(Math.random()*10)+1;
+  captchaAnswer = a + b;
+  const q = document.getElementById('captcha-question');
+  if(q) q.textContent = `What is ${a} + ${b}?`;
+  const inp = document.getElementById('captcha-answer');
+  if(inp) inp.value = '';
+}
 async function submitPrayer(e){
   e.preventDefault();
   const name = document.getElementById('prayer-name').value.trim();
@@ -1253,6 +1283,19 @@ async function submitPrayer(e){
   const request = document.getElementById('prayer-request').value.trim();
   const anonymous = document.getElementById('prayer-anonymous').checked;
   if(!request){showToast('Please share your prayer request.');return;}
+  // Honeypot check
+  const honeypot = document.getElementById('prayer-website').value;
+  if(honeypot){return;}
+  // Math captcha check
+  const userAnswer = parseInt(document.getElementById('captcha-answer').value);
+  const errEl = document.getElementById('captcha-error');
+  if(isNaN(userAnswer) || userAnswer !== captchaAnswer){
+    errEl.classList.remove('hidden');
+    setTimeout(()=>errEl.classList.add('hidden'), 3000);
+    initCaptcha();
+    return;
+  }
+  errEl.classList.add('hidden');
   const btn = e.target;
   btn.textContent = 'Submitting…';
   btn.disabled = true;
