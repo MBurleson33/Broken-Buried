@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Broken + Buried</title>
 <meta name="description" content="Broken + Buried — we bury ourselves daily so that we may start new every day. A blog about faith, brokenness, and renewal." />
 <meta name="robots" content="index, follow" />
@@ -27,7 +27,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <style>
-:root{--black:#0a0a0a;--dark:#111111;--mid:#1a1a1a;--surface:#222222;--border:rgba(255,255,255,0.08);--white:#f5f2ee;--off-white:#c8c4be;--muted:#7a7670;--accent:#b8a98a;--accent2:#8c7b5e;--font-display:'Cinzel',serif;--font-body:'EB Garamond',serif;--font-editorial:'Cormorant Garamond',serif;--max-w:1280px;--reading-w:min(1100px,96vw);--nav-h:90px}
+:root{--black:#0a0a0a;--dark:#111111;--mid:#1a1a1a;--surface:#222222;--border:rgba(255,255,255,0.08);--white:#f5f2ee;--off-white:#c8c4be;--muted:#7a7670;--accent:#b8a98a;--accent2:#8c7b5e;--font-display:'Cinzel',serif;--font-body:'EB Garamond',serif;--font-editorial:'Cormorant Garamond',serif;--max-w:1280px;--reading-w:min(1100px,96vw);--nav-h:90px;--safe-top:env(safe-area-inset-top,0px)}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
 body{background:var(--black);color:var(--white);font-family:var(--font-body);font-size:clamp(22px,2.5vw,26px);line-height:1.9;overflow-x:hidden;-webkit-font-smoothing:antialiased}
@@ -46,7 +46,7 @@ input,textarea{font:inherit;color:inherit;background:none;border:none;outline:no
 /* ═══ NAV ═══════════════════════════════════════════════════
 Logo left | Nav links right-aligned | divider | search icon
 ════════════════════════════════════════════════════════════ */
-#nav{position:fixed;top:0;left:0;right:0;height:var(–nav-h);z-index:200;display:flex;align-items:center;justify-content:space-between;padding:16px clamp(1.2rem,4vw,3rem) 0;transition:background .4s,backdrop-filter .4s,box-shadow .4s}
+#nav{position:fixed;top:0;left:0;right:0;height:var(–nav-h);z-index:200;display:flex;align-items:center;justify-content:space-between;padding:max(16px,env(safe-area-inset-top)) clamp(1.2rem,4vw,3rem) 0;transition:background .4s,backdrop-filter .4s,box-shadow .4s}
 #nav.scrolled{background:rgba(10,10,10,0.88);backdrop-filter:blur(20px);box-shadow:0 1px 0 var(–border)}
 
 /* Logo — wide image on desktop, stacked icon on mobile */
@@ -354,7 +354,7 @@ article.post-body img{max-width:100%;margin:2rem auto;filter:grayscale(20%)}
 .nav-hamburger{display:flex!important;visibility:visible!important;opacity:1!important}
 .nav-logo-wide{display:none}
 .nav-logo-icon{display:block}
-#nav{padding:0 1.2rem}
+#nav{padding:max(14px,env(safe-area-inset-top)) 1.2rem 0}
 #about{grid-template-columns:1fr}
 .about-image{display:none}
 .form-row{grid-template-columns:1fr}
