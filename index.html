@@ -176,6 +176,8 @@ Logo left | Nav links right-aligned | divider | search icon
 .tag-filter-btn{font-family:var(–font-display);font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:var(–off-white);border:1px solid rgba(255,255,255,0.25);padding:.4rem 1rem;transition:all .2s;cursor:pointer;background:rgba(255,255,255,0.04)}
 .tag-filter-btn:hover{color:var(–white);border-color:var(–accent2)}
 .tag-filter-btn.active{color:var(–black);background:var(–accent);border-color:var(–accent)}
+.tag-filter-more{font-family:var(–font-display);font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:var(–accent);border:1px solid rgba(184,169,138,.4);padding:.4rem 1rem;transition:all .2s;cursor:pointer;background:none}
+.tag-filter-more:hover{border-color:var(–accent);background:rgba(184,169,138,.08)}
 #blog-results-count{font-family:var(–font-display);font-size:.52rem;letter-spacing:.2em;text-transform:uppercase;color:var(–muted);max-width:var(–max-w);margin:0 auto;padding:1.5rem clamp(1.5rem,4vw,3rem) 0}
 
 /* SINGLE POST */
@@ -865,14 +867,20 @@ async function loadBlogPosts(){
   renderTagFilters();
   filterBlogPosts();
 }
+let showAllTags = false;
 function renderTagFilters(){
-  // Count tag usage across all posts
   const tagCount={};
   blogPosts.forEach(p=>(p.tags||[]).forEach(t=>{tagCount[t]=(tagCount[t]||0)+1;}));
   const sorted=Object.entries(tagCount).sort((a,b)=>b[1]-a[1]).slice(0,25).map(([t])=>t);
   const row=document.getElementById('tag-filter-row');
   if(!sorted.length){row.innerHTML='';return;}
-  row.innerHTML=`<span class="tag-filter-label">Filter</span>`+sorted.map(t=>`<button class="tag-filter-btn" onclick="toggleTagFilter('${esc(t)}')" id="tag-btn-${esc(t)}">${esc(t)}</button>`).join('');
+  const visible = showAllTags ? sorted : sorted.slice(0,6);
+  const hasMore = sorted.length > 6;
+  row.innerHTML=`<span class="tag-filter-label">Filter</span>`
+    + visible.map(t=>`<button class="tag-filter-btn" onclick="toggleTagFilter('${esc(t)}')" id="tag-btn-${esc(t)}">${esc(t)}</button>`).join('')
+    + (hasMore ? `<button class="tag-filter-more" onclick="showAllTags=!showAllTags;renderTagFilters()">${showAllTags ? '− Less' : '+ More'}</button>` : '');
+  // Restore active state
+  activeTags.forEach(t=>{const el=document.getElementById(`tag-btn-${t}`);if(el)el.classList.add('active');});
 }
 function toggleTagFilter(tag){
   if(activeTags.has(tag))activeTags.delete(tag);else activeTags.add(tag);
