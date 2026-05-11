@@ -433,7 +433,7 @@ article.post-body img{max-width:100%;margin:2rem auto;filter:grayscale(20%)}
       <img src="/images/Broken+Buried_White.png" alt="" class="hero-logo-img" onerror="this.style.display='none'" />
       <p class="hero-verse">"For we know that our old self was crucified with him so that the body ruled by sin might be done away with, that we should no longer be slaves to sin." — Romans 6:6</p>
     </div>
-    <div class="scroll-indicator" onclick="document.getElementById('about').scrollIntoView({behavior:'smooth'})">
+    <div class="scroll-indicator" onclick="const el=document.getElementById('about');const y=el.getBoundingClientRect().top+window.scrollY-document.getElementById('nav').offsetHeight;window.scrollTo({top:y,behavior:'smooth'});" >
       <div class="scroll-line"></div>
       <div class="scroll-arrow"></div>
     </div>
