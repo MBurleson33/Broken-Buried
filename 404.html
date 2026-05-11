@@ -12,24 +12,25 @@
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet" />
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--black:#0a0a0a;--mid:#1a1a1a;--border:rgba(255,255,255,0.08);--white:#f5f2ee;--muted:#7a7670;--accent:#b8a98a;--accent2:#8c7b5e;--font-display:'Cinzel',serif;--font-editorial:'Cormorant Garamond',serif}
+a{color:inherit;text-decoration:none}
+:root{--black:#0a0a0a;--mid:#1a1a1a;--border:rgba(255,255,255,0.08);--white:#f5f2ee;--muted:#7a7670;--font-display:'Cinzel',serif;--font-editorial:'Cormorant Garamond',serif}
 html,body{height:100%;overflow:hidden}
 body{background:var(--black);color:var(--white);font-family:var(--font-editorial);display:flex;align-items:center;justify-content:center;-webkit-font-smoothing:antialiased}
 
 .container{position:relative;text-align:center;padding:clamp(2rem,8vw,5rem) clamp(1.5rem,5vw,3rem);max-width:680px;animation:fadeUp .8s ease forwards}
 @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 .rule{width:min(300px,80vw);height:1px;background:linear-gradient(to right,transparent,rgba(255,255,255,.25),transparent);margin:0 auto 2.5rem}
-.number{font-family:var(–font-display);font-size:clamp(5rem,18vw,10rem);font-weight:600;letter-spacing:.08em;color:transparent;-webkit-text-stroke:1px rgba(184,169,138,.4);line-height:1;margin-bottom:.5rem;animation:flicker 6s ease-in-out infinite}
+.number{font-family:var(–font-display);font-size:clamp(5rem,18vw,10rem);font-weight:600;letter-spacing:.08em;color:transparent;-webkit-text-stroke:1px rgba(255,255,255,.25);line-height:1;margin-bottom:.5rem;animation:flicker 6s ease-in-out infinite}
 @keyframes flicker{0%,95%,100%{opacity:1}96%{opacity:.6}97%{opacity:1}98%{opacity:.4}99%{opacity:1}}
-.cross{font-size:clamp(1.5rem,4vw,2.2rem);color:var(–accent2);margin-bottom:1.5rem;display:block;opacity:.7}
+
 .title{font-family:var(–font-display);font-size:clamp(1.1rem,3vw,1.6rem);font-weight:600;letter-spacing:.08em;color:var(–white);margin-bottom:1.2rem}
 .verse{font-family:var(–font-editorial);font-style:italic;font-size:clamp(1rem,2.5vw,1.15rem);color:var(–muted);line-height:1.8;max-width:480px;margin:0 auto 2.5rem}
-.verse cite{display:block;margin-top:.5rem;font-size:.85em;color:var(–accent2);font-style:normal;letter-spacing:.05em}
+.verse cite{display:block;margin-top:.5rem;font-size:.85em;color:var(–muted);font-style:normal;letter-spacing:.05em}
 .actions{display:flex;align-items:center;justify-content:center;gap:1rem;flex-wrap:wrap}
-.btn-primary{font-family:var(–font-display);font-size:.62rem;letter-spacing:.25em;text-transform:uppercase;color:var(–black);background:var(–accent);border:none;padding:.9rem 2.2rem;cursor:pointer;transition:background .2s;text-decoration:none;display:inline-block}
+.btn-primary{font-family:var(–font-display);font-size:.62rem;letter-spacing:.25em;text-transform:uppercase;color:var(–black)!important;background:var(–white);border:none;padding:.9rem 2.2rem;cursor:pointer;transition:background .2s;text-decoration:none;display:inline-block;-webkit-appearance:none}
 .btn-primary:hover{background:var(–white)}
-.btn-secondary{font-family:var(–font-display);font-size:.62rem;letter-spacing:.25em;text-transform:uppercase;color:var(–white);border:1px solid var(–border);padding:.9rem 2.2rem;cursor:pointer;transition:background .2s,border-color .2s;text-decoration:none;display:inline-block}
-.btn-secondary:hover{background:rgba(255,255,255,.05);border-color:var(–accent2)}
+.btn-secondary{font-family:var(–font-display);font-size:.62rem;letter-spacing:.25em;text-transform:uppercase;color:var(–white)!important;border:1px solid var(–border);padding:.9rem 2.2rem;cursor:pointer;transition:background .2s,border-color .2s;text-decoration:none;display:inline-block}
+.btn-secondary:hover{background:rgba(255,255,255,.05);border-color:var(–muted)}
 .bottom-rule{width:min(300px,80vw);height:1px;background:linear-gradient(to right,transparent,rgba(255,255,255,.25),transparent);margin:2.5rem auto 0}
 </style>
 
@@ -38,7 +39,7 @@ body{background:var(--black);color:var(--white);font-family:var(--font-editorial
 <div class="container">
   <div class="rule"></div>
   <div class="number">404</div>
-  <span class="cross">✝</span>
+  <img src="/images/B+B%20FavIcon.png" alt="Broken + Buried" style="width:60px;height:60px;object-fit:contain;margin:1rem auto 1.5rem;display:block;opacity:.7;" />
   <h1 class="title">This Page Has Been Buried</h1>
   <p class="verse">
     "For everything there is a season, and a time for every matter under heaven."
