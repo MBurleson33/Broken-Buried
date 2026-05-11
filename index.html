@@ -73,7 +73,7 @@ Logo left | Nav links right-aligned | divider | search icon
 .nav-hamburger.open span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
 
 /* Mobile dropdown */
-.nav-drawer{display:flex;position:fixed;top:var(–nav-h);right:0;left:0;background:rgba(10,10,10,0.97);backdrop-filter:blur(20px);border-bottom:1px solid var(–border);z-index:150;flex-direction:column;min-width:100%;transform:translateY(-10px);opacity:0;pointer-events:none;transition:opacity .25s ease,transform .25s ease}
+.nav-drawer{display:flex;position:fixed;top:0;right:0;left:0;background:rgba(10,10,10,0.98);backdrop-filter:blur(20px);border-bottom:1px solid var(–border);z-index:300;flex-direction:column;min-width:100%;transform:translateY(-110%);opacity:0;pointer-events:none;transition:opacity .25s ease,transform .25s ease;padding-top:calc(var(–nav-h) + 1rem)}
 .nav-drawer.open{opacity:1;transform:translateY(0);pointer-events:all}
 .nav-drawer a{font-family:var(–font-display);font-size:.75rem;letter-spacing:.2em;text-transform:uppercase;color:var(–off-white);padding:1.2rem 2rem;border-bottom:1px solid var(–border);transition:color .2s,background .2s;display:block}
 .nav-drawer a:last-child{border-bottom:none}
