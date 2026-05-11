@@ -167,9 +167,9 @@ Logo left | Nav links right-aligned | divider | search icon
 .page-title-area{max-width:var(–max-w);margin:0 auto;padding:0 clamp(1.5rem,4vw,3rem) 2rem;border-bottom:1px solid var(–border);display:flex;align-items:flex-end;justify-content:space-between;gap:1rem;flex-wrap:wrap}
 .page-title{font-family:var(–font-display);font-size:clamp(2.4rem,5.5vw,4.2rem);font-weight:600;letter-spacing:.05em}
 .page-subtitle{font-family:var(–font-editorial);font-style:italic;color:var(–muted);margin-top:.4rem;font-size:clamp(1rem,2vw,1.12rem)}
-.blog-search-wrap{display:flex;align-items:center;gap:.8rem;border:1px solid var(–border);padding:.6rem 1rem;background:var(–mid);flex-shrink:0;min-width:clamp(180px,30vw,280px)}
+.blog-search-wrap{display:flex;align-items:center;gap:.8rem;border:1px solid rgba(255,255,255,0.2);padding:.7rem 1.2rem;background:var(–mid);flex-shrink:0;min-width:clamp(200px,40vw,300px);border-radius:2px}
 .blog-search-wrap svg{width:14px;height:14px;color:var(–muted);flex-shrink:0}
-#blog-search-input{background:transparent;font-family:var(–font-display);font-size:.62rem;letter-spacing:.15em;color:var(–white);flex:1}
+#blog-search-input{background:transparent;font-family:var(–font-display);font-size:.65rem;letter-spacing:.15em;color:var(–white);flex:1}
 #blog-search-input::placeholder{color:var(–muted)}
 .tag-filter-row{max-width:var(–max-w);margin:0 auto;padding:1.5rem clamp(1.5rem,4vw,3rem);display:flex;flex-wrap:wrap;gap:.6rem;align-items:center;background:var(–mid);border-top:1px solid var(–border);border-bottom:1px solid var(–border)}
 .tag-filter-label{font-family:var(–font-display);font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(–muted);margin-right:.7rem}
@@ -365,6 +365,7 @@ article.post-body img{max-width:100%;margin:2rem auto;filter:grayscale(20%)}
 .about-image{display:none}
 .form-row{grid-template-columns:1fr}
 .admin-post-actions{width:100%}
+.blog-search-wrap{min-width:100%;margin-top:.5rem}
 .post-nav{grid-template-columns:1fr}
 }
 @media(min-width:769px){
