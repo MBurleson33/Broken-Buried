@@ -66,7 +66,7 @@ Logo left | Nav links right-aligned | divider | search icon
 .nav-search-btn svg{width:17px;height:17px}
 
 /* Hamburger — mobile only */
-.nav-hamburger{display:none;flex-direction:column;justify-content:center;align-items:center;gap:6px;width:44px;height:44px;cursor:pointer;padding:0;margin-left:.5rem;flex-shrink:0}
+.nav-hamburger{display:none;flex-direction:column;justify-content:center;align-items:center;gap:6px;width:44px;height:44px;cursor:pointer;padding:0;position:fixed;top:max(20px,env(safe-area-inset-top));right:1.2rem;z-index:400}
 .nav-hamburger span{display:block;width:26px;height:2px;background:#f5f2ee;transition:all .3s ease;transform-origin:center}
 .nav-hamburger.open span:nth-child(1){transform:translateY(6px) rotate(45deg)}
 .nav-hamburger.open span:nth-child(2){opacity:0}
@@ -395,11 +395,11 @@ article.post-body img{max-width:100%;margin:2rem auto;filter:grayscale(20%)}
     <button class="nav-search-btn" onclick="openSearch()" aria-label="Search">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
     </button>
-    <button class="nav-hamburger" id="nav-hamburger" onclick="toggleDrawer()" aria-label="Menu" aria-expanded="false">
-      <span></span><span></span><span></span>
-    </button>
   </div>
 </nav>
+<button class="nav-hamburger" id="nav-hamburger" onclick="toggleDrawer()" aria-label="Menu" aria-expanded="false">
+  <span></span><span></span><span></span>
+</button>
 <div class="nav-drawer" id="nav-drawer">
   <a onclick="navigate('home');toggleDrawer();return false;" href="/">Home</a>
   <a onclick="navigate('blog');toggleDrawer();return false;" href="/blog">Blog</a>
