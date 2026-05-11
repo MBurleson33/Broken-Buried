@@ -756,7 +756,14 @@ function showPage(id){
   document.getElementById(id).classList.remove('hidden');
   document.getElementById('footer').classList.toggle('hidden',id==='auth-gate'||id==='admin-page');
   window.scrollTo(0,0);
-  document.getElementById('nav').classList.remove('scrolled');
+  // Hero pages start transparent, all others get solid nav immediately
+  const heroPages = ['home-page','post-page'];
+  const nav = document.getElementById('nav');
+  if(heroPages.includes(id)){
+    nav.classList.remove('scrolled');
+  } else {
+    nav.classList.add('scrolled');
+  }
   document.getElementById('nav-home')?.classList.toggle('active',id==='home-page');
   document.getElementById('nav-blog')?.classList.toggle('active',id==='blog-page');
 }
