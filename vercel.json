@@ -5,6 +5,5 @@
     { "source": "/robots.txt", "destination": "/api/robots" },
     { "source": "/post/:slug", "destination": "/api/post?slug=:slug" },
     { "source": "/(.*)", "destination": "/index.html" }
-  ],
-  "404": "/404.html"
+  ]
 }
