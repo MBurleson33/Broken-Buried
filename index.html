@@ -326,6 +326,10 @@ article.post-body img{max-width:100%;margin:2rem auto;filter:grayscale(20%)}
 .prayer-subtitle{font-family:var(–font-editorial);font-style:italic;color:var(–muted);font-size:clamp(1rem,2vw,1.15rem);margin-bottom:.8rem;line-height:1.7}
 .prayer-verse{font-family:var(–font-editorial);font-style:italic;color:var(–accent2);font-size:clamp(.9rem,1.8vw,1rem);margin-bottom:3rem;padding:1.2rem 1.5rem;border-left:2px solid var(–accent2);background:rgba(255,255,255,.02)}
 .prayer-form{display:flex;flex-direction:column;gap:1.5rem}
+.prayer-form input[type=“text”],
+.prayer-form input[type=“email”],
+.prayer-form input[type=“number”]{width:100%;background:var(–mid)!important;border:1px solid var(–border)!important;padding:.8rem 1rem;color:var(–white)!important;font-family:var(–font-editorial);font-size:clamp(1rem,2vw,1.05rem);transition:border-color .2s;display:block}
+.prayer-form input:focus,.prayer-form textarea:focus{border-color:var(–accent2)!important;outline:none}
 .prayer-success{display:none;text-align:center;padding:3rem 2rem;border:1px solid var(–accent2);background:rgba(140,123,94,.05)}
 .prayer-success-icon{font-size:2.5rem;margin-bottom:1rem}
 .prayer-success h3{font-family:var(–font-display);font-size:1rem;letter-spacing:.1em;color:var(–white);margin-bottom:.8rem}
