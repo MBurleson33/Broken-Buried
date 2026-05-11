@@ -853,9 +853,11 @@ document.addEventListener('click', function(e){
 window.addEventListener('popstate', function(e){
   if(e.state){
     navigate(e.state.target, e.state.slug, false);
-  } else {
-    navigate('home', null, false);
+    } else {
+    window.location.replace('/404.html');
   }
+}
+
 });
 
 // Read current URL and route to correct page on load
