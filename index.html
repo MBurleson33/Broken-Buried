@@ -879,7 +879,7 @@ function renderTagFilters(){
   const hasMore = sorted.length > 6;
   row.innerHTML=`<span class="tag-filter-label">Filter</span>`
     + visible.map(t=>`<button class="tag-filter-btn" onclick="toggleTagFilter('${esc(t)}')" id="tag-btn-${esc(t)}">${esc(t)}</button>`).join('')
-    + (hasMore ? `<button class="tag-filter-more" onclick="showAllTags=!showAllTags;renderTagFilters()">${showAllTags ? '− Less' : '+ More'}</button>` : '');
+    + (hasMore ? `<button class="tag-filter-more" onclick="showAllTags=!showAllTags;renderTagFilters();document.activeElement.blur();const g=document.getElementById('blog-posts-grid');g.style.display='none';g.offsetHeight;g.style.display=''">${showAllTags ? '− Less' : '+ More'}</button>` : '');
   // Restore active state
   activeTags.forEach(t=>{const el=document.getElementById(`tag-btn-${t}`);if(el)el.classList.add('active');});
 }
