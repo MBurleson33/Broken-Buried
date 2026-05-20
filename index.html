@@ -1005,7 +1005,19 @@ function initDragReorder(){
   const items = document.querySelectorAll('.admin-post-item[draggable]');
   let dragSrc = null;
 
+  async function saveOrder(){
+    const allItems = [...document.querySelectorAll('.admin-post-item[data-id]')];
+    const total = allItems.length;
+    const updates = allItems.map((el,i)=>({id:el.dataset.id,sort_order:total-i}));
+    showToast('Saving order…');
+    await Promise.all(updates.map(u=>sb.from('posts').update({sort_order:u.sort_order}).eq('id',u.id)));
+    allPosts=[];
+    showToast('Order saved!');
+    loadAdminPosts();
+  }
+
   items.forEach(item => {
+    // ── Mouse drag (desktop) ──────────────────────────────
     item.addEventListener('dragstart', function(e){
       dragSrc = this;
       this.classList.add('dragging');
@@ -1013,38 +1025,79 @@ function initDragReorder(){
     });
     item.addEventListener('dragend', function(){
       this.classList.remove('dragging');
-      document.querySelectorAll('.admin-post-item').forEach(i => i.classList.remove('drag-over'));
+      document.querySelectorAll('.admin-post-item').forEach(i=>i.classList.remove('drag-over'));
     });
     item.addEventListener('dragover', function(e){
       e.preventDefault();
       e.dataTransfer.dropEffect = 'move';
-      document.querySelectorAll('.admin-post-item').forEach(i => i.classList.remove('drag-over'));
+      document.querySelectorAll('.admin-post-item').forEach(i=>i.classList.remove('drag-over'));
       this.classList.add('drag-over');
     });
     item.addEventListener('drop', async function(e){
       e.preventDefault();
-      if(dragSrc === this) return;
+      if(dragSrc===this) return;
       this.classList.remove('drag-over');
-      // Get all items in current order
-      const allItems = [...document.querySelectorAll('.admin-post-item[data-id]')];
-      const fromIdx = allItems.indexOf(dragSrc);
-      const toIdx = allItems.indexOf(this);
-      // Reorder array
-      allItems.splice(fromIdx, 1);
-      allItems.splice(toIdx, 0, dragSrc);
-      // Update sort_order in Supabase — highest number = first
-      const total = allItems.length;
-      const updates = allItems.map((el, i) => ({
-        id: el.dataset.id,
-        sort_order: total - i
-      }));
-      showToast('Saving order…');
-      await Promise.all(updates.map(u =>
-        sb.from('posts').update({sort_order: u.sort_order}).eq('id', u.id)
-      ));
-      allPosts = []; // bust cache
-      showToast('Order saved!');
-      loadAdminPosts();
+      const allItems=[...document.querySelectorAll('.admin-post-item[data-id]')];
+      const fromIdx=allItems.indexOf(dragSrc);
+      const toIdx=allItems.indexOf(this);
+      allItems.splice(fromIdx,1);
+      allItems.splice(toIdx,0,dragSrc);
+      const list=document.getElementById('admin-posts-list');
+      allItems.forEach(el=>list.appendChild(el));
+      await saveOrder();
+    });
+
+    // ── Touch drag (mobile) ───────────────────────────────
+    const handle = item.querySelector('.drag-handle');
+    if(!handle) return;
+    let touchDragSrc = null, placeholder = null, startY = 0, offsetY = 0;
+
+    handle.addEventListener('touchstart', function(e){
+      touchDragSrc = item;
+      const rect = item.getBoundingClientRect();
+      startY = e.touches[0].clientY;
+      offsetY = startY - rect.top;
+      // Create placeholder
+      placeholder = document.createElement('div');
+      placeholder.style.cssText = `height:${rect.height}px;border:1px dashed var(--accent2);background:rgba(184,169,138,.05);margin-bottom:.5rem;`;
+      item.parentNode.insertBefore(placeholder, item.nextSibling);
+      // Float the item
+      item.style.cssText += `position:fixed;left:${rect.left}px;top:${rect.top}px;width:${rect.width}px;z-index:999;opacity:.85;pointer-events:none;margin:0;`;
+      e.preventDefault();
+    },{passive:false});
+
+    handle.addEventListener('touchmove', function(e){
+      if(!touchDragSrc) return;
+      const y = e.touches[0].clientY;
+      item.style.top = (y - offsetY) + 'px';
+      // Find which item we're over
+      const els = [...document.querySelectorAll('.admin-post-item[data-id]')].filter(el=>el!==item);
+      const list = document.getElementById('admin-posts-list');
+      let inserted = false;
+      for(const el of els){
+        const r = el.getBoundingClientRect();
+        if(y < r.top + r.height/2){
+          list.insertBefore(placeholder, el);
+          inserted = true;
+          break;
+        }
+      }
+      if(!inserted) list.appendChild(placeholder);
+      e.preventDefault();
+    },{passive:false});
+
+    handle.addEventListener('touchend', async function(){
+      if(!touchDragSrc) return;
+      // Reset item style
+      item.style.position='';item.style.left='';item.style.top='';
+      item.style.width='';item.style.zIndex='';item.style.opacity='';
+      item.style.pointerEvents='';item.style.margin='';
+      // Place item where placeholder is
+      placeholder.parentNode.insertBefore(item, placeholder);
+      placeholder.remove();
+      placeholder = null;
+      touchDragSrc = null;
+      await saveOrder();
     });
   });
 }
