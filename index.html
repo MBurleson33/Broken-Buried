@@ -947,12 +947,30 @@ function shareToTwitter(){
   window.open(url, '_blank', 'width=600,height=400');
 }
 async function copyPostLink(){
+  const url = getPostURL();
+  // Try modern clipboard API first
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    try{
+      await navigator.clipboard.writeText(url);
+      showToast('Link copied!');
+      return;
+    } catch(e){}
+  }
+  // Fallback: create a temporary input, select it, copy
+  const input = document.createElement('input');
+  input.style.cssText = 'position:fixed;top:0;left:0;opacity:0;';
+  input.value = url;
+  document.body.appendChild(input);
+  input.focus();
+  input.select();
+  input.setSelectionRange(0, 99999);
   try{
-    await navigator.clipboard.writeText(getPostURL());
+    document.execCommand('copy');
     showToast('Link copied!');
   } catch(e){
-    showToast(getPostURL());
+    showToast(url);
   }
+  document.body.removeChild(input);
 }
 
 // ═══ COMMENTS ════════════════════════════════════════════
