@@ -1241,6 +1241,11 @@ async function savePost(){
   if(!title||!slug){showToast('Title and slug are required.');return;}
   const tags=document.getElementById('editor-tags').value.split(',').map(t=>t.trim()).filter(Boolean);
   const payload={title,slug,excerpt:document.getElementById('editor-excerpt').value.trim(),cover_image_url:document.getElementById('editor-cover').value.trim()||null,content:document.getElementById('editor-content').value,published:isPublished,tags};
+  // New posts get sort_order higher than all existing posts so they appear first
+  if(!id){
+    const{data:top}=await sb.from('posts').select('sort_order').order('sort_order',{ascending:false}).limit(1);
+    payload.sort_order = top&&top.length ? (top[0].sort_order||0)+1 : 1;
+  }
   const{error}=id?await sb.from('posts').update(payload).eq('id',id):await sb.from('posts').insert(payload);
   if(error){showToast('Error: '+error.message);return;}
   allPosts=[];showToast(id?'Post updated.':'Post created.');clearEditor();switchTab('posts');
