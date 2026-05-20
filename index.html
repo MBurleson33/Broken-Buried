@@ -810,7 +810,15 @@ window.addEventListener('popstate', function(e){
 // Read current URL and route to correct page on load
 function routeFromURL(){
   const path = window.location.pathname;
-  // Handle redirect from api/post.js for real visitors hitting /post/:slug
+  // Check sessionStorage for slug set by api/post.js
+  const storedSlug = sessionStorage.getItem('__post_slug__');
+  if(storedSlug){
+    sessionStorage.removeItem('__post_slug__');
+    history.replaceState({target:'post',slug:storedSlug}, '', `/post/${storedSlug}`);
+    navigate('post', storedSlug, false);
+    return;
+  }
+  // Handle ?_post= param fallback
   const params = new URLSearchParams(window.location.search);
   const postSlug = params.get('_post');
   if(postSlug){
