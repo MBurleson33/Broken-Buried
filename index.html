@@ -52,7 +52,7 @@ input,textarea{font:inherit;color:inherit;background:none;border:none;outline:no
 /* Logo — wide image on desktop, stacked icon on mobile */
 .nav-logo{display:flex;align-items:center;cursor:pointer;flex-shrink:0;user-select:none}
 .nav-logo-text{font-family:var(--font-display);font-size:clamp(.75rem,2vw,.95rem);letter-spacing:.12em;color:var(--white);white-space:nowrap;border-bottom:1px solid var(--accent2);padding-bottom:2px;text-shadow:0 1px 6px rgba(0,0,0,.9)}
-.nav-logo-wide{height:36px;width:auto;display:block;filter:drop-shadow(0 1px 4px rgba(0,0,0,.8))}
+.nav-logo-wide{height:36px;max-height:36px;width:auto;display:block;filter:drop-shadow(0 1px 4px rgba(0,0,0,.8))}
 .nav-logo-icon{height:48px;width:auto;display:none;filter:drop-shadow(0 1px 4px rgba(0,0,0,.8))}
 
 /* Right side: links + divider + search */
@@ -434,7 +434,9 @@ article.post-body img{max-width:100%;margin:2rem auto;filter:grayscale(20%)}
     </video>
     <div id="hero-bg"></div>
     <div class="hero-content">
-      <img src="/images/Broken+Buried_White.png" alt="Broken + Buried" class="hero-logo-img" onerror="this.style.display='none'" />
+      <div style="height:clamp(70px,14vw,160px);display:flex;align-items:center;justify-content:center;margin:clamp(.8rem,2vw,1.2rem) auto;overflow:hidden;">
+        <img src="/images/Broken+Buried_White.png" alt="Broken + Buried" class="hero-logo-img" style="height:100%;width:auto;" onerror="this.parentElement.style.display='none'" />
+      </div>
       <p class="hero-verse">"For we know that our old self was crucified with him so that the body ruled by sin might be done away with, that we should no longer be slaves to sin." — Romans 6:6</p>
     </div>
     <h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;">Broken + Buried — Faith, Brokenness, and Renewal</h1>
