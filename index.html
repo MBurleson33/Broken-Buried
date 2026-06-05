@@ -51,7 +51,7 @@ input,textarea{font:inherit;color:inherit;background:none;border:none;outline:no
 #nav.scrolled{background:rgba(10,10,10,0.88);backdrop-filter:blur(20px);box-shadow:0 1px 0 var(--border)}
 
 /* Logo — wide image on desktop, stacked icon on mobile */
-.nav-logo{display:flex;align-items:center;cursor:pointer;flex-shrink:0;user-select:none}
+.nav-logo{display:flex;align-items:center;cursor:pointer;flex-shrink:0;user-select:none;transition:opacity .4s ease,visibility .4s ease}.nav-logo-hidden{opacity:0;visibility:hidden;pointer-events:none}
 .nav-logo-text{display:none}
 .nav-logo-wide{height:36px;width:auto;display:block;filter:drop-shadow(0 1px 4px rgba(0,0,0,.8))}
 .nav-logo-icon{height:48px;width:auto;display:none;filter:drop-shadow(0 1px 4px rgba(0,0,0,.8))}
@@ -430,7 +430,7 @@ article.post-body img{max-width:100%;margin:2rem auto;filter:grayscale(20%)}
 <!-- HOME -->
 <main id="home-page">
   <section id="hero">
-    <video id="hero-video" autoplay muted loop playsinline aria-hidden="true" poster="/images/og-default.jpg">
+    <video id="hero-video" autoplay muted loop playsinline aria-hidden="true">
       <source src="/images/BKG.mp4" type="video/mp4" />
     </video>
     <div id="hero-bg"></div>
@@ -676,6 +676,17 @@ let currentPostSlug=null,currentPostId=null,isPublished=false,allPosts=[],active
 window.addEventListener('scroll',()=>{
   document.getElementById('nav').classList.toggle('scrolled',window.scrollY>50);
   document.getElementById('back-top').classList.toggle('visible',window.scrollY>400);
+  // Hide nav logo on home page until scrolled past hero
+  const onHome = !document.getElementById('home-page').classList.contains('hidden');
+  const heroH = window.innerHeight;
+  const navLogo = document.querySelector('.nav-logo');
+  if(navLogo){
+    if(onHome && window.scrollY < heroH - 100){
+      navLogo.classList.add('nav-logo-hidden');
+    } else {
+      navLogo.classList.remove('nav-logo-hidden');
+    }
+  }
   if(!document.getElementById('post-page').classList.contains('hidden')){
     const t=document.body.scrollHeight-window.innerHeight;
     document.getElementById('progress-bar').style.width=t>0?(window.scrollY/t*100)+'%':'0%';
@@ -760,10 +771,19 @@ function showPage(id){
   // Hero pages start transparent, all others get solid nav immediately
   const heroPages = ['home-page','post-page'];
   const nav = document.getElementById('nav');
+  const navLogo = document.querySelector('.nav-logo');
   if(heroPages.includes(id)){
     nav.classList.remove('scrolled');
   } else {
     nav.classList.add('scrolled');
+  }
+  // Hide logo on home page at top, show on all other pages
+  if(navLogo){
+    if(id === 'home-page' && window.scrollY < window.innerHeight - 100){
+      navLogo.classList.add('nav-logo-hidden');
+    } else {
+      navLogo.classList.remove('nav-logo-hidden');
+    }
   }
   document.getElementById('nav-home')?.classList.toggle('active',id==='home-page');
   document.getElementById('nav-blog')?.classList.toggle('active',id==='blog-page');
