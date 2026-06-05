@@ -52,7 +52,7 @@ input,textarea{font:inherit;color:inherit;background:none;border:none;outline:no
 /* Logo — wide image on desktop, stacked icon on mobile */
 .nav-logo{display:flex;align-items:center;cursor:pointer;flex-shrink:0;user-select:none}
 .nav-logo-text{font-family:var(--font-display);font-size:clamp(.75rem,2vw,.95rem);letter-spacing:.12em;color:var(--white);white-space:nowrap;border-bottom:1px solid var(--accent2);padding-bottom:2px;text-shadow:0 1px 6px rgba(0,0,0,.9)}
-.nav-logo-wide{height:36px;max-height:36px;width:auto;display:block;filter:drop-shadow(0 1px 4px rgba(0,0,0,.8))}
+.nav-logo-wide{height:36px;width:auto;display:block;filter:drop-shadow(0 1px 4px rgba(0,0,0,.8))}
 .nav-logo-icon{height:48px;width:auto;display:none;filter:drop-shadow(0 1px 4px rgba(0,0,0,.8))}
 
 /* Right side: links + divider + search */
@@ -112,7 +112,7 @@ input,textarea{font:inherit;color:inherit;background:none;border:none;outline:no
 .hero-rule{width:min(900px,90vw);height:1px;background:linear-gradient(to right,transparent,rgba(255,255,255,.35),transparent);margin:0 auto}
 
 /* Hero logo image — replaces the text title */
-.hero-logo-img{display:block;margin:clamp(.8rem,2vw,1.2rem) auto;height:clamp(70px,14vw,160px);width:auto;filter:drop-shadow(0 0 40px rgba(200,185,155,.15))}
+.hero-logo-img{display:block;margin:clamp(.8rem,2vw,1.2rem) auto;height:clamp(70px,14vw,160px);width:auto;animation:fadeUp 1.5s ease forwards;opacity:0;filter:drop-shadow(0 0 40px rgba(200,185,155,.15))}
 
 .hero-verse{margin-top:1.4rem;font-family:var(--font-editorial);font-style:italic;font-size:clamp(1rem,2.2vw,1.2rem);color:var(--muted);letter-spacing:.04em;max-width:min(860px,88vw);margin-left:auto;margin-right:auto;animation:fadeUp 1.5s .4s ease forwards;opacity:0;padding:0 1.5rem}
 @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
@@ -434,9 +434,7 @@ article.post-body img{max-width:100%;margin:2rem auto;filter:grayscale(20%)}
     </video>
     <div id="hero-bg"></div>
     <div class="hero-content">
-      <div style="height:clamp(70px,14vw,160px);display:flex;align-items:center;justify-content:center;margin:clamp(.8rem,2vw,1.2rem) auto;overflow:hidden;">
-        <img src="/images/Broken+Buried_White.png" alt="Broken + Buried" class="hero-logo-img" style="height:100%;width:auto;" onerror="this.parentElement.style.display='none'" />
-      </div>
+      <img src="/images/Broken+Buried_White.png" alt="Broken + Buried" class="hero-logo-img" onerror="this.style.display='none'" onload="document.querySelectorAll('.nav-logo-text').forEach(el=>el.style.display='none')" />
       <p class="hero-verse">"For we know that our old self was crucified with him so that the body ruled by sin might be done away with, that we should no longer be slaves to sin." — Romans 6:6</p>
     </div>
     <h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;">Broken + Buried — Faith, Brokenness, and Renewal</h1>
