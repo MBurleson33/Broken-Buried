@@ -338,6 +338,10 @@ article.post-body img{max-width:100%;margin:2rem auto;filter:grayscale(20%)}
 .prayer-success h3{font-family:var(--font-display);font-size:1rem;letter-spacing:.1em;color:var(--white);margin-bottom:.8rem}
 .prayer-success p{font-family:var(--font-editorial);font-style:italic;color:var(--muted);font-size:1.05rem}
 
+/* DONATE */
+.donate-btn{position:fixed;bottom:2rem;left:2rem;z-index:50;font-family:var(--font-display);font-size:.52rem;letter-spacing:.2em;text-transform:uppercase;color:var(--white);border:1px solid rgba(255,255,255,.2);padding:.6rem 1.2rem;background:rgba(10,10,10,.7);backdrop-filter:blur(10px);cursor:pointer;transition:all .3s;text-decoration:none;display:flex;align-items:center;gap:.5rem}
+
+.donate-btn:hover{border-color:var(--accent);color:var(--accent)}
 /* BACK TO TOP */
 #back-top{position:fixed;bottom:2rem;right:2rem;z-index:50;width:40px;height:40px;background:var(--mid);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;transform:translateY(10px);transition:opacity .3s,transform .3s,background .2s;pointer-events:none}
 #back-top.visible{opacity:1;transform:translateY(0);pointer-events:all}
@@ -378,6 +382,7 @@ article.post-body img{max-width:100%;margin:2rem auto;filter:grayscale(20%)}
 <body>
 
 <div id="progress-bar"></div>
+<a class="donate-btn" id="donate-btn" href="https://venmo.com/u/Matthew-Burleson" target="_blank" rel="noopener">♡ Bless This Ministry</a>
 <button id="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top">
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"/></svg>
 </button>
