@@ -348,6 +348,20 @@ article.post-body img{max-width:100%;margin:2rem auto;filter:grayscale(20%)}
 #back-top:hover{background:var(--surface);border-color:var(--accent2)}
 #back-top svg{width:14px;height:14px;color:var(--accent)}
 
+/* CONFIRM MODAL */
+#confirm-modal{position:fixed;inset:0;z-index:500;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.7);backdrop-filter:blur(8px);opacity:0;pointer-events:none;transition:opacity .2s}
+#confirm-modal.open{opacity:1;pointer-events:all}
+.confirm-box{background:var(--mid);border:1px solid var(--border);padding:2.5rem;max-width:380px;width:90%;text-align:center;transform:translateY(10px);transition:transform .2s}
+#confirm-modal.open .confirm-box{transform:translateY(0)}
+.confirm-message{font-family:var(--font-editorial);font-size:clamp(1rem,2vw,1.1rem);color:var(--off-white);line-height:1.7;margin-bottom:2rem}
+.confirm-actions{display:flex;gap:.8rem;justify-content:center}
+.confirm-ok{font-family:var(--font-display);font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:var(--black);background:var(--accent);border:none;padding:.8rem 2rem;cursor:pointer;transition:background .2s}
+.confirm-ok:hover{background:var(--white)}
+.confirm-ok.danger{background:#c0392b;color:var(--white)}
+.confirm-ok.danger:hover{background:#e74c3c}
+.confirm-cancel{font-family:var(--font-display);font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);background:none;border:1px solid var(--border);padding:.8rem 2rem;cursor:pointer;transition:all .2s}
+.confirm-cancel:hover{color:var(--white);border-color:var(--accent2)}
+
 /* TOAST */
 #toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(20px);z-index:999;font-family:var(--font-display);font-size:.62rem;letter-spacing:.15em;text-transform:uppercase;padding:1rem 1.5rem;background:var(--accent);color:var(--black);opacity:0;transition:all .3s;pointer-events:none;white-space:nowrap}
 #toast.show{transform:translateX(-50%) translateY(0);opacity:1}
@@ -659,6 +673,15 @@ article.post-body img{max-width:100%;margin:2rem auto;filter:grayscale(20%)}
   </ul>
   <div class="footer-copy">© <span id="footer-year"></span> Broken + Buried</div>
 </footer>
+<div id="confirm-modal">
+  <div class="confirm-box">
+    <div class="confirm-message" id="confirm-message"></div>
+    <div class="confirm-actions">
+      <button class="confirm-cancel" id="confirm-cancel">Cancel</button>
+      <button class="confirm-ok danger" id="confirm-ok">Delete</button>
+    </div>
+  </div>
+</div>
 <div id="toast" role="status" aria-live="polite"></div>
 
 <script>
@@ -1186,7 +1209,7 @@ function initDragReorder(){
 }
 
 async function togglePostPublished(id,current){await sb.from('posts').update({published:!current}).eq('id',id);allPosts=[];loadAdminPosts();}
-async function deletePost(id,title){if(!confirm(`Delete "${title}"?`))return;await sb.from('posts').delete().eq('id',id);await sb.from('comments').delete().eq('post_id',id);allPosts=[];showToast('Post deleted.');loadAdminPosts();}
+async function deletePost(id,title){if(!await showConfirm(`Delete "${title}"?`))return;await sb.from('posts').delete().eq('id',id);await sb.from('comments').delete().eq('post_id',id);allPosts=[];showToast('Post deleted.');loadAdminPosts();}
 
 // ═══ COMMENT MODERATION ═══════════════════════════════════
 async function loadAdminComments(){
@@ -1198,7 +1221,7 @@ async function loadAdminComments(){
   list.innerHTML=data.map(c=>`<div class="comment-mod-item"><div class="comment-mod-meta"><span class="comment-mod-author">${esc(c.author_name)}</span><span class="comment-mod-post">on: ${esc(c.posts?.title||'Unknown')}</span><span class="admin-post-status ${c.approved?'published':''}">${c.approved?'Approved':'Pending'}</span></div><div class="comment-mod-body">${esc(c.body)}</div><div class="comment-mod-actions">${!c.approved?`<button class="btn-icon" onclick="approveComment('${c.id}')">Approve</button>`:''}<button class="btn-icon danger" onclick="deleteComment('${c.id}')">Delete</button></div></div>`).join('');
 }
 async function approveComment(id){await sb.from('comments').update({approved:true}).eq('id',id);showToast('Comment approved.');loadAdminComments();}
-async function deleteComment(id){if(!confirm('Delete comment?'))return;await sb.from('comments').delete().eq('id',id);showToast('Deleted.');loadAdminComments();}
+async function deleteComment(id){if(!await showConfirm('Delete this comment?'))return;await sb.from('comments').delete().eq('id',id);showToast('Deleted.');loadAdminComments();}
 
 // ═══ ADMIN PRAYER REQUESTS ═══════════════════════════════
 async function loadAdminPrayer(){
@@ -1345,6 +1368,30 @@ async function submitPrayer(e){
     btn.textContent = 'Submit Prayer Request';
     btn.disabled = false;
   }
+}
+
+// ═══ CONFIRM MODAL ════════════════════════════════════════
+function showConfirm(message, okLabel='Delete'){
+  return new Promise(resolve => {
+    const modal = document.getElementById('confirm-modal');
+    const msg = document.getElementById('confirm-message');
+    const ok = document.getElementById('confirm-ok');
+    const cancel = document.getElementById('confirm-cancel');
+    msg.textContent = message;
+    ok.textContent = okLabel;
+    modal.classList.add('open');
+    const cleanup = (result) => {
+      modal.classList.remove('open');
+      ok.removeEventListener('click', onOk);
+      cancel.removeEventListener('click', onCancel);
+      resolve(result);
+    };
+    const onOk = () => cleanup(true);
+    const onCancel = () => cleanup(false);
+    ok.addEventListener('click', onOk);
+    cancel.addEventListener('click', onCancel);
+    modal.addEventListener('click', e => { if(e.target===modal) cleanup(false); }, {once:true});
+  });
 }
 
 // ═══ UTILS ════════════════════════════════════════════════
