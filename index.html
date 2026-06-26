@@ -482,7 +482,8 @@ article.post-body img{max-width:100%;margin:2rem auto;filter:grayscale(20%)}
     <div class="section-header">
       <span class="section-label">Recent Posts</span>
     </div>
-    <div class="posts-grid" id="home-posts-grid"><div class="loading-spinner">Loading</div></div>
+    <div id="home-posts-featured"></div>
+    <div class="posts-grid" id="home-posts-grid"></div>
     <!-- View All only at bottom -->
     <div class="view-all-wrap"><button class="btn-outline" onclick="navigate('blog')">View All Posts →</button></div>
   </section>
@@ -909,9 +910,48 @@ async function ensurePostsCache(){
 // ═══ HOME POSTS ═══════════════════════════════════════════
 async function loadHomePosts(){
   await ensurePostsCache();
-  const grid=document.getElementById('home-posts-grid');
-  const posts=allPosts.slice(0,10);
-  grid.innerHTML=posts.length?posts.map(renderPostCard).join(''):`<p style="padding:2rem;color:var(--muted);font-family:var(--font-editorial);font-style:italic;grid-column:1/-1;">No posts yet.</p>`;
+  const featured = document.getElementById('home-posts-featured');
+  const grid = document.getElementById('home-posts-grid');
+  if(!allPosts.length){
+    if(featured) featured.innerHTML = '';
+    grid.innerHTML = `<p style="padding:2rem;color:var(--muted);font-family:var(--font-editorial);font-style:italic;grid-column:1/-1;">No posts yet.</p>`;
+    return;
+  }
+  const hero = allPosts[0];
+  const heroTags = shuffleTags(hero.tags||[]).slice(0,3).map(t=>`<span class="tag-pill">${esc(t)}</span>`).join('');
+  const heroImg = hero.cover_image_url ? `<img src="${esc(hero.cover_image_url)}" alt="${esc(hero.title)}" loading="lazy" />` : `<div class="post-placeholder">✝</div>`;
+  const sidebarPosts = allPosts.slice(1,4);
+  const sidebarHTML = sidebarPosts.map(p => {
+    const tags = shuffleTags(p.tags||[]).slice(0,3).map(t=>`<span class="tag-pill">${esc(t)}</span>`).join('');
+    const img = p.cover_image_url ? `<img src="${esc(p.cover_image_url)}" alt="${esc(p.title)}" loading="lazy" />` : `<div class="post-placeholder" style="height:100%;min-height:90px;">✝</div>`;
+    return `<div class="post-card-side" onclick="navigate('post','${esc(p.slug)}')" tabindex="0">
+      <div class="post-card-image">${img}</div>
+      <div class="post-card-side-body">
+        ${tags ? `<div class="post-card-side-tags">${tags}</div>` : ''}
+        <div class="post-card-side-title">${esc(p.title)}</div>
+        <div class="post-card-side-excerpt">${esc(p.excerpt||'')}</div>
+        <div class="post-card-side-reading">${readingTime(p.content)}</div>
+      </div>
+    </div>`;
+  }).join('');
+  if(featured) featured.innerHTML = `<div class="posts-featured">
+    <div class="post-card-hero" onclick="navigate('post','${esc(hero.slug)}')" tabindex="0">
+      <div class="post-card-image">${heroImg}</div>
+      <div class="post-card-hero-text">
+        ${heroTags ? `<div class="post-card-tags" style="margin-bottom:.7rem">${heroTags}</div>` : ''}
+        <div class="post-card-title">${esc(hero.title)}</div>
+        <div class="post-card-excerpt">${esc(hero.excerpt||'')}</div>
+        <div class="post-card-hero-footer">
+          <span class="post-card-reading">${readingTime(hero.content)}</span>
+          <span class="read-more">Read More →</span>
+        </div>
+      </div>
+    </div>
+    <div class="posts-sidebar">${sidebarHTML}</div>
+  </div>`;
+  const remaining = allPosts.slice(4,13);
+  grid.classList.add('home-grid');
+  grid.innerHTML = remaining.length ? remaining.map(renderPostCard).join('') : '';
 }
 
 // ═══ BLOG POSTS ═══════════════════════════════════════════
